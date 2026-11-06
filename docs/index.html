@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jelly_Titlerenamerr - Jellyfin Plugin by lalithchary</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <meta name="description" content="Jellyfin plugin by lalithchary to automatically clean movie and episode titles, strip website domains, and extract release years into Jellyfin metadata.">
+    <meta property="og:title" content="Jelly_Titlerenamerr - Jellyfin Plugin">
+    <meta property="og:description" content="Cleans titles, strips piracy website domains, and extracts release years into Jellyfin metadata.">
+    <meta property="og:image" content="https://lalithchary.github.io/Jelly_Titlerenamerr/logo.png">
+    <meta property="og:url" content="https://lalithchary.github.io/Jelly_Titlerenamerr/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0e1117;
+            --bg-secondary: #161b22;
+            --bg-card: #1c2128;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --accent-blue: #00a4dc;
+            --accent-cyan: #00e5ff;
+            --accent-green: #4caf50;
+            --accent-purple: #aa5cc3;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header / Navbar */
+        header {
+            background: rgba(22, 27, 34, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0.9em 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.85em;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .brand-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0 2px 10px rgba(0, 164, 220, 0.3);
+        }
+
+        .brand-name {
+            font-size: 1.25em;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .brand-author {
+            font-size: 0.78em;
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.2em;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.92em;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-blue);
+        }
+
+        .btn-github {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5em;
+            background: #238636;
+            color: #fff;
+            padding: 0.45em 0.95em;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.88em;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn-github:hover {
+            background: #2ea043;
+            transform: translateY(-1px);
+        }
+
+        /* Main Container */
+        main {
+            flex: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3em 1.5em;
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 2.5em 0 3.5em;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(0, 164, 220, 0.15);
+            border: 1px solid rgba(0, 164, 220, 0.35);
+            color: var(--accent-cyan);
+            font-size: 0.82em;
+            font-weight: 600;
+            padding: 0.3em 0.85em;
+            border-radius: 20px;
+            margin-bottom: 1.2em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-title {
+            font-size: 2.9em;
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.18;
+            margin-bottom: 0.5em;
+            background: linear-gradient(135deg, #ffffff 40%, #00a4dc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2em;
+            color: var(--text-secondary);
+            max-width: 780px;
+            margin: 0 auto 2em;
+            font-weight: 400;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1em;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: var(--accent-blue);
+            color: #fff;
+            padding: 0.75em 1.6em;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5em;
+            font-size: 1em;
+            box-shadow: 0 4px 15px rgba(0, 164, 220, 0.35);
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn-primary:hover {
+            background: #0093c7;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+            padding: 0.75em 1.6em;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid var(--border-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5em;
+            font-size: 1em;
+            transition: background 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        /* Section Styling */
+        .section-header {
+            margin-bottom: 1.5em;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 0.3em;
+            color: var(--text-primary);
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 1em;
+        }
+
+        /* REPO INSTALLATION CARD (HIGHLIGHTED) */
+        .install-card {
+            background: linear-gradient(180deg, #161b22 0%, #11151c 100%);
+            border: 1px solid rgba(0, 164, 220, 0.4);
+            border-radius: 14px;
+            padding: 2.2em;
+            margin-bottom: 3.5em;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .repo-url-box {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 8px;
+            padding: 0.85em 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1em;
+            margin: 1.5em 0;
+            font-family: var(--font-mono);
+            font-size: 0.95em;
+            color: var(--accent-cyan);
+            word-break: break-all;
+        }
+
+        .btn-copy {
+            background: var(--accent-blue);
+            color: #fff;
+            border: none;
+            padding: 0.55em 1.1em;
+            border-radius: 6px;
+            font-family: var(--font-main);
+            font-weight: 600;
+            font-size: 0.88em;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+
+        .btn-copy:hover {
+            background: #0093c7;
+        }
+
+        .install-steps {
+            list-style: none;
+            counter-reset: step-counter;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2em;
+            margin-top: 1.8em;
+        }
+
+        .install-step-item {
+            counter-increment: step-counter;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.2em;
+            position: relative;
+        }
+
+        .install-step-item::before {
+            content: counter(step-counter);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            background: var(--accent-blue);
+            color: #fff;
+            border-radius: 50%;
+            font-size: 0.82em;
+            font-weight: 700;
+            margin-bottom: 0.6em;
+        }
+
+        .install-step-title {
+            font-weight: 600;
+            font-size: 1.05em;
+            margin-bottom: 0.3em;
+        }
+
+        .install-step-desc {
+            color: var(--text-secondary);
+            font-size: 0.88em;
+            line-height: 1.45;
+        }
+
+        /* LIVE TESTER SANDBOX */
+        .tester-card {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(0, 164, 220, 0.35);
+            border-radius: 14px;
+            padding: 2.2em;
+            margin-bottom: 3.5em;
+        }
+
+        .field-group {
+            margin-bottom: 1.4em;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 0.92em;
+            font-weight: 600;
+            margin-bottom: 0.45em;
+        }
+
+        .field-input {
+            width: 100%;
+            padding: 0.85em 1em;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 0.92em;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .field-input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(0, 164, 220, 0.2);
+        }
+
+        .field-input.readonly-extracted {
+            background: rgba(0, 164, 220, 0.1);
+            border-color: rgba(0, 164, 220, 0.35);
+            color: var(--accent-cyan);
+            font-weight: 600;
+            cursor: default;
+        }
+
+        .output-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(76, 175, 80, 0.4);
+            border-radius: 8px;
+            padding: 1.1em 1.3em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .output-title-val {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        /* FEATURES GRID */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.4em;
+            margin-bottom: 3.5em;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5em;
+            transition: transform 0.15s, border-color 0.15s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(0, 164, 220, 0.4);
+        }
+
+        .feature-icon {
+            font-size: 1.8em;
+            margin-bottom: 0.5em;
+        }
+
+        .feature-title {
+            font-size: 1.15em;
+            font-weight: 700;
+            margin-bottom: 0.4em;
+            color: var(--text-primary);
+        }
+
+        .feature-desc {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 2.5em 1.5em;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+
+        footer a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="brand">
+                <img src="logo.png" alt="Jelly_Titlerenamerr Logo" class="brand-logo" onerror="this.src='logo.jpg'">
+                <div>
+                    <div class="brand-name">Jelly_Titlerenamerr</div>
+                    <div class="brand-author">by lalithchary</div>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="#install" class="nav-link">Installation</a>
+                <a href="#tester" class="nav-link">Live Tester</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="https://github.com/lalithchary/Jelly_Titlerenamerr" target="_blank" rel="noopener" class="btn-github">
+                    <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                    </svg>
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-badge">Jellyfin Plugin • v1.3.1.0</div>
+            <h1 class="hero-title">Clean Titles. Extract Metadata.<br>Automate Jellyfin.</h1>
+            <p class="hero-subtitle">
+                <strong>Jelly_Titlerenamerr</strong> strips piracy website prefixes (<code>5MovieRulz</code>, <code>TamilMV</code>, <code>TamilBlasters</code>, etc.), rip tags, and tech specs. It leaves pristine movie titles and automatically extracts the release year directly into Jellyfin metadata.
+            </p>
+            <div class="hero-actions">
+                <a href="#install" class="btn-primary">
+                    <span>⚡ Quick Install (Repository)</span>
+                </a>
+                <a href="https://github.com/lalithchary/Jelly_Titlerenamerr/releases/download/v1.3.1.0/Jelly_Titlerenamerr_1.3.1.0.zip" class="btn-secondary">
+                    <span>📦 Download .zip Release</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- INSTALLATION SECTION -->
+        <section id="install" class="install-card">
+            <div class="section-header">
+                <span style="font-size: 0.82em; font-weight: 700; color: var(--accent-cyan); text-transform: uppercase;">Easy 1-Click Setup</span>
+                <h2 class="section-title" style="margin-top: 0.2em;">Install via Jellyfin Plugin Repository</h2>
+                <p class="section-desc">
+                    Add the repository manifest URL below directly into your Jellyfin Dashboard to receive automatic one-click installs and updates:
+                </p>
+            </div>
+
+            <!-- Repository URL box with 1-click copy -->
+            <div class="repo-url-box">
+                <span id="repoUrl">https://lalithchary.github.io/Jelly_Titlerenamerr/manifest.json</span>
+                <button type="button" class="btn-copy" id="btnCopyRepo" onclick="copyRepoUrl()">
+                    📋 Copy URL
+                </button>
+            </div>
+
+            <ol class="install-steps">
+                <li class="install-step-item">
+                    <div class="install-step-title">Open Repositories</div>
+                    <div class="install-step-desc">
+                        In Jellyfin, navigate to <strong>Dashboard → Plugins → Repositories</strong> tab and click the <strong>+</strong> button.
+                    </div>
+                </li>
+                <li class="install-step-item">
+                    <div class="install-step-title">Paste Repository URL</div>
+                    <div class="install-step-desc">
+                        Set Repository Name to <code>Jelly_Titlerenamerr</code> and paste the manifest URL copied above. Click <strong>Save</strong>.
+                    </div>
+                </li>
+                <li class="install-step-item">
+                    <div class="install-step-title">Install from Catalog</div>
+                    <div class="install-step-desc">
+                        Go to the <strong>Catalog</strong> tab, find <strong>Jelly_Titlerenamerr</strong>, click <strong>Install</strong>, and restart your Jellyfin server.
+                    </div>
+                </li>
+            </ol>
+
+            <div style="margin-top: 2em; padding-top: 1.5em; border-top: 1px solid var(--border-color); font-size: 0.88em; color: var(--text-secondary);">
+                <strong>Manual Install:</strong> Prefer manual installation? Download <a href="https://github.com/lalithchary/Jelly_Titlerenamerr/releases/download/v1.3.1.0/Jelly_Titlerenamerr.dll" style="color: var(--accent-blue); text-decoration: underline;">Jelly_Titlerenamerr.dll</a> and place it in your Jellyfin plugins directory (<code>%ProgramData%\Jellyfin\Server\plugins\Jelly_Titlerenamerr\</code> on Windows or <code>/config/plugins/Jelly_Titlerenamerr/</code> on Linux/Docker), then restart Jellyfin.
+            </div>
+        </section>
+
+        <!-- LIVE TESTER SANDBOX -->
+        <section id="tester" class="tester-card">
+            <div class="section-header">
+                <span style="font-size: 0.82em; font-weight: 700; color: var(--accent-green); text-transform: uppercase;">Live Sandbox Preview</span>
+                <h2 class="section-title" style="margin-top: 0.2em;">🧪 Interactive Cleaner Tester</h2>
+                <p class="section-desc">
+                    Experience how Jelly_Titlerenamerr parses filenames, extracts release year into metadata, and creates clean titles:
+                </p>
+            </div>
+
+            <!-- Field 1: Current Metadata -->
+            <div class="field-group">
+                <label class="field-label" for="liveInput" style="color: #e0e0e0;">
+                    1. Current Metadata (Raw Filename / Current Title):
+                </label>
+                <input type="text" id="liveInput" class="field-input" 
+                       value="www.5MovieRulz.company - Lalithchary (2026) 1080p Telugu HQ HDRip - HEVC - (DD+5.1 - 192kbps & AAC) - 2.1GB - ESub.mkv" 
+                       placeholder="Paste any dirty filename here..." />
+            </div>
+
+            <!-- Field 2: What is Required from Current Data -->
+            <div class="field-group">
+                <label class="field-label" for="liveRequired" style="color: var(--accent-cyan);">
+                    2. What is Required from Current Data (Extracted Metadata):
+                </label>
+                <input type="text" id="liveRequired" class="field-input readonly-extracted" readonly 
+                       value="Year: 2026 (Metadata: ProductionYear)" />
+            </div>
+
+            <!-- Field 3: Output Title -->
+            <div class="field-group">
+                <label class="field-label" style="color: var(--accent-green);">
+                    3. Output Title (Cleaned Title for Jellyfin):
+                </label>
+                <div class="output-box">
+                    <div>
+                        <div style="font-size: 0.72em; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2em;">CLEAN TITLE APPLIED TO JELLYFIN:</div>
+                        <div id="liveOutput" class="output-title-val">Lalithchary</div>
+                    </div>
+                    <span style="font-size: 0.8em; color: #81c784; background: rgba(76, 175, 80, 0.15); border: 1px solid rgba(76, 175, 80, 0.3); border-radius: 4px; padding: 0.3em 0.8em; font-weight: 600;">Read-Only</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURES SECTION -->
+        <section id="features">
+            <div class="section-header" style="text-align: center; margin-bottom: 2.5em;">
+                <h2 class="section-title">Key Capabilities</h2>
+                <p class="section-desc">Built specifically for real-world media collectors and home servers.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <div class="feature-title">Complete Domain Stripper</div>
+                    <div class="feature-desc">
+                        Strips all changing piracy domains (<code>.company</code>, <code>.cz</code>, <code>.lat</code>, <code>.to</code>, <code>.vip</code>, <code>.top</code>) and leading prefixes like <code>www.5MovieRulz.company - </code>.
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📅</div>
+                    <div class="feature-title">Year in Metadata, Not Title</div>
+                    <div class="feature-desc">
+                        Keeps movie titles pristine (e.g. <code>Lalithchary</code>) while saving the release year (<code>2026</code>) into Jellyfin's dedicated <code>ProductionYear</code> metadata field.
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📂</div>
+                    <div class="feature-title">Library Selection GUI</div>
+                    <div class="feature-desc">
+                        Pick exactly which Jellyfin libraries to process. Enable on Movies while leaving other libraries untouched, or process everything.
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-title">Automatic Triggers</div>
+                    <div class="feature-desc">
+                        Runs automatically when new files are imported during library scans, when items are updated, or on-demand via Jellyfin Scheduled Tasks.
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🧹</div>
+                    <div class="feature-title">Audio & Technical Specs Removal</div>
+                    <div class="feature-desc">
+                        Cleans technical audio specifications (<code>(DD+5.1 - 192kbps & AAC)</code>), file sizes (<code>2.1GB</code>), quality resolutions, and scene tags.
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">✏️</div>
+                    <div class="feature-title">Custom Keywords & Regex</div>
+                    <div class="feature-desc">
+                        Specify custom site names, release groups, or regular expressions directly from the GUI for instant personalization.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>
+            <strong>Jelly_Titlerenamerr</strong> is an open-source Jellyfin plugin created by <a href="https://github.com/lalithchary" target="_blank" rel="noopener"><strong>lalithchary</strong></a>.
+        </p>
+        <p style="margin-top: 0.5em; font-size: 0.85em;">
+            Hosted on GitHub Pages • <a href="https://github.com/lalithchary/Jelly_Titlerenamerr" target="_blank" rel="noopener">GitHub Repository</a> • <a href="manifest.json">manifest.json</a>
+        </p>
+    </footer>
+
+    <!-- Client-side Live Sandbox Script -->
+    <script>
+        function copyRepoUrl() {
+            var url = document.getElementById('repoUrl').textContent.trim();
+            navigator.clipboard.writeText(url).then(function() {
+                var btn = document.getElementById('btnCopyRepo');
+                btn.textContent = '✓ Copied!';
+                btn.style.background = '#2ea043';
+                setTimeout(function() {
+                    btn.textContent = '📋 Copy URL';
+                    btn.style.background = 'var(--accent-blue)';
+                }, 2000);
+            }).catch(function(err) {
+                prompt('Copy this URL:', url);
+            });
+        }
+
+        function cleanSample(text) {
+            if (!text) return { title: '', year: null };
+            var str = text.trim();
+
+            str = str.replace(/\.(mkv|mp4|avi|mov|wmv|flv|m4v|ts|m2ts|webm|mpg|mpeg|vob|iso|3gp)$/i, '');
+
+            var extractedYear = null;
+
+            // 1. Hyphen to year
+            var m1 = str.match(/^.*?[-–—]\s*(.+?)\s*[\(\[]((?:19|20)\d{2})[\)\]]/);
+            if (m1) {
+                var t = m1[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                return { title: t, year: m1[2] };
+            }
+
+            // 2. Bracket prefix
+            var m2 = str.match(/^\[[^\]]+\]\s*[-–—]?\s*(.+?)\s*[\(\[]((?:19|20)\d{2})[\)\]]/);
+            if (m2) {
+                var t2 = m2[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                return { title: t2, year: m2[2] };
+            }
+
+            // 3. Standalone title with year
+            var m3 = str.match(/^([^(\[]+?)\s*[\(\[]((?:19|20)\d{2})[\)\]]/);
+            if (m3 && !str.match(/S\d+E\d+/i)) {
+                var t3 = m3[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                return { title: t3, year: m3[2] };
+            }
+
+            // 4. Dot year
+            var m4 = str.match(/^([a-zA-Z0-9\s\._\-'’]+?)[\.\s_-]+((?:19|20)\d{2})(?:[\.\s_-]|$)/);
+            if (m4 && !str.match(/S\d+E\d+/i) && !str.includes('-')) {
+                var t4 = m4[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                return { title: t4, year: m4[2] };
+            }
+
+            // Fallback
+            str = str.replace(/^(?:[\[\(]?[^\s\-–—]+(?:www|\.company|\.cz|\.lat|\.to|\.vip|\.org|\.net|\.com|MovieRulz|Tamil|CineVood)[^\s\-–—]*[\]\)]?)\s*[-–—]\s*/gi, '');
+            str = str.replace(/^(?:[\[\(]?(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9_\-\.]+\.[a-zA-Z]{2,}[\]\)]?[\s\-_:~|]*)+/gi, ' ');
+            str = str.replace(/(?:[-–—]\s*)?[\[\(]?\s*\d+(?:\.\d+)?\s*(?:GB|MB)\s*[\]\)]?/gi, ' ');
+            str = str.replace(/[\[\(][^\]\)]*(?:5\.1|7\.1|2\.0|6CH|8CH|Kbps|DD\+|DDP|Dolby|AAC|AC3|Atmos)[^\]\)]*[\]\)]/gi, ' ');
+            str = str.replace(/\./g, ' ').replace(/_/g, ' ');
+
+            var qTags = ["2160p", "1080p", "720p", "480p", "4K", "UHD", "BluRay", "BDRip", "BRRip", "WEB-DL", "WEBRip", "HDRip", "HDTV", "x264", "x265", "HEVC", "AVC", "AAC", "DTS", "TrueHD", "Atmos", "HDR"];
+            qTags.forEach(function (tag) {
+                str = str.replace(new RegExp('\\b' + tag + '\\b', 'gi'), ' ');
+            });
+
+            var yMatch = str.match(/\b((?:19|20)\d{2})\b/);
+            if (yMatch && !str.match(/S\d+E\d+/i)) {
+                extractedYear = yMatch[1];
+                str = str.replace(/\b(?:19|20)\d{2}\b/g, ' ');
+            }
+
+            str = str.replace(/[\[\(][\s\-_:~|&]*[\]\)]/g, ' ');
+            str = str.replace(/\s{2,}/g, ' ').trim();
+            str = str.replace(/^[ \t\-_:~|\.\,\/\\]+/, '').replace(/[ \t\-_:~|\.\,\/\\]+$/, '');
+
+            return { title: str, year: extractedYear };
+        }
+
+        function updateTester() {
+            var input = document.getElementById('liveInput').value;
+            var result = cleanSample(input);
+
+            var reqEl = document.getElementById('liveRequired');
+            if (result.year) {
+                reqEl.value = 'Year: ' + result.year + ' (Metadata: ProductionYear)';
+            } else {
+                reqEl.value = '(No release year detected in current data)';
+            }
+
+            var outEl = document.getElementById('liveOutput');
+            outEl.textContent = result.title || '(Empty)';
+        }
+
+        document.getElementById('liveInput').addEventListener('input', updateTester);
+        updateTester();
+    </script>
+</body>
+</html>

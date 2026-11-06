@@ -1,0 +1,21 @@
+## .NET
+**/bin/
+**/obj/
+*.pdb
+*.runtimeconfig.json
+*.deps.json
+
+## IDE
+.vs/
+.vscode/
+*.csproj.user
+*.sln.user
+
+## Build
+.msbuild/
+publish/
+
+## OS
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jelly_Titlerenamerr</title>
+</head>
+<body>
+    <div id="JellyTitlerenamerrConfigPage" data-role="page" class="page type-interior pluginConfigurationPage JellyTitlerenamerrConfigPage" data-require="emby-input,emby-button,emby-select,emby-checkbox">
+        <div data-role="content">
+            <div class="content-primary">
+                <form id="JellyTitlerenamerrConfigForm" class="JellyTitlerenamerrConfigForm">
+                    <div class="sectionTitleContainer flex align-items-center" style="gap: 1em; margin-bottom: 0.5em;">
+                        <img src="https://lalithchary.github.io/Jelly_Titlerenamerr/logo.png" alt="Logo" style="height: 48px; width: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.4);" onerror="this.style.display='none'" />
+                        <div>
+                            <h2 class="sectionTitle" style="margin: 0; font-size: 1.8em; color: #00a4dc;">Jelly_Titlerenamerr Settings</h2>
+                            <div style="font-size: 0.85em; color: #888;">Developed by <strong style="color: #4caf50;">lalithchary</strong></div>
+                        </div>
+                    </div>
+                    <p style="color: #aaa; margin-bottom: 2em; line-height: 1.5;">
+                        Automatically cleans movie and episode titles by stripping piracy website domains (e.g., <code>5MovieRulz</code>, <code>TamilMV</code>, <code>TamilBlasters</code>, <code>CineVood</code>), scene tags, and audio clutter. Extracts clean titles and stores release years directly into Jellyfin metadata.
+                    </p>
+
+                    <!-- LIVE TESTER SANDBOX: 3 FIELDS, NO EXAMPLE BUTTONS -->
+                    <div class="paperList" style="background: rgba(0, 164, 220, 0.08); border: 1px solid rgba(0, 164, 220, 0.35); border-radius: 10px; padding: 1.5em; margin-bottom: 2.5em;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8em;">
+                            <h3 style="margin: 0; color: #00a4dc; font-size: 1.25em;">🧪 Live Cleaner Tester & Metadata Preview</h3>
+                            <span style="font-size: 0.8em; color: #81c784; background: rgba(76, 175, 80, 0.15); border: 1px solid rgba(76, 175, 80, 0.3); border-radius: 4px; padding: 0.2em 0.6em;">Interactive Sandbox</span>
+                        </div>
+                        <p style="color: #bbb; font-size: 0.9em; margin-bottom: 1.2em;">
+                            Type or paste any filename to preview how current metadata is parsed, what data is extracted, and the final output title:
+                        </p>
+
+                        <!-- FIELD 1: Current Metadata -->
+                        <div class="inputContainer" style="margin-bottom: 1.2em;">
+                            <label class="inputLabel" for="txtTestInput" style="font-weight: 600; color: #e0e0e0; font-size: 0.95em;">
+                                1. Current Metadata (Raw Filename / Current Title):
+                            </label>
+                            <input is="emby-input" type="text" id="txtTestInput" class="emby-input" 
+                                   value="www.5MovieRulz.company - Lalithchary (2026) 1080p Telugu HQ HDRip - HEVC - (DD+5.1 - 192kbps & AAC) - 2.1GB - ESub.mkv" />
+                            <div class="fieldDescription">The incoming filename or dirty metadata from your media file.</div>
+                        </div>
+
+                        <!-- FIELD 2: What is Required from Current Data -->
+                        <div class="inputContainer" style="margin-bottom: 1.2em;">
+                            <label class="inputLabel" for="txtTestRequiredData" style="font-weight: 600; color: #00a4dc; font-size: 0.95em;">
+                                2. What is Required from Current Data (Extracted Metadata):
+                            </label>
+                            <input is="emby-input" type="text" id="txtTestRequiredData" class="emby-input" readonly
+                                   style="background: rgba(0, 164, 220, 0.12); border-color: rgba(0, 164, 220, 0.4); color: #00e5ff; font-weight: bold; cursor: default;" />
+                            <div class="fieldDescription">Metadata extracted from current data (e.g. Release Year) to be stored in Jellyfin metadata.</div>
+                        </div>
+
+                        <!-- FIELD 3: Output Title (Readonly like existing) -->
+                        <div class="inputContainer" style="margin-bottom: 0.2em;">
+                            <label class="inputLabel" for="txtTestOutputTitle" style="font-weight: 600; color: #4caf50; font-size: 0.95em;">
+                                3. Output Title (Cleaned Title for Jellyfin):
+                            </label>
+                            <div style="background: rgba(0, 0, 0, 0.5); padding: 1em 1.2em; border-radius: 6px; border: 1px solid rgba(76, 175, 80, 0.4); display: flex; align-items: center; justify-content: space-between;">
+                                <div>
+                                    <div style="font-size: 0.72em; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2em;">CLEANED TITLE RESULT:</div>
+                                    <div id="lblTestResult" style="font-size: 1.35em; font-weight: bold; color: #4caf50;">Lalithchary</div>
+                                </div>
+                                <span style="font-size: 0.8em; color: #81c784; background: rgba(76, 175, 80, 0.15); padding: 0.3em 0.7em; border-radius: 4px; border: 1px solid rgba(76, 175, 80, 0.3);">Read-Only</span>
+                            </div>
+                            <div class="fieldDescription">The final clean title applied to Jellyfin (year is excluded from title and saved to metadata).</div>
+                        </div>
+                    </div>
+
+                    <!-- 1. LIBRARIES SELECTION -->
+                    <div class="sectionTitleContainer flex align-items-center">
+                        <h3 class="sectionTitle">1. Target Libraries</h3>
+                    </div>
+                    <p style="color: #bbb; font-size: 0.9em;">Choose which Jellyfin media libraries this plugin should operate on:</p>
+                    
+                    <div class="checkboxContainer checkboxContainer-withDescription">
+                        <label>
+                            <input is="emby-checkbox" type="checkbox" id="chkProcessAllLibraries" />
+                            <span>Process all libraries</span>
+                        </label>
+                        <div class="fieldDescription checkboxFieldDescription">
+                            When enabled, cleans titles across all libraries. Uncheck to select specific libraries.
+                        </div>
+                    </div>
+
+                    <div id="libraryListContainer" style="margin-left: 1.8em; margin-top: 0.8em; margin-bottom: 2em;">
+                        <div id="libraryCheckboxes" style="display: flex; flex-direction: column; gap: 0.5em;">
+                            <div style="color: #888;">Loading your libraries...</div>
+                        </div>
+                    </div>
+
+                    <!-- 2. MEDIA TYPES -->
+                    <div class="sectionTitleContainer flex align-items-center">
+                        <h3 class="sectionTitle">2. Media Types</h3>
+                    </div>
+                    <div style="display: flex; gap: 2em; margin-bottom: 2em;">
+                        <div class="checkboxContainer">
+                            <label>
+                                <input is="emby-checkbox" type="checkbox" id="chkEnableMovies" checked />
+                                <span>Movies</span>
+                            </label>
+                        </div>
+                        <div class="checkboxContainer">
+                            <label>
+                                <input is="emby-checkbox" type="checkbox" id="chkEnableEpisodes" checked />
+                                <span>TV Show Episodes</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 3. WHEN SHOULD RUN (TRIGGERS) -->
+                    <div class="sectionTitleContainer flex align-items-center">
+                        <h3 class="sectionTitle">3. Automation Triggers & Safety Mode</h3>
+                    </div>
+                    
+                    <div class="checkboxContainer checkboxContainer-withDescription">
+                        <label>
+                            <input is="emby-checkbox" type="checkbox" id="chkRunOnItemAdded" checked />
+                            <span>Trigger automatically when new media is added (Library Scan / New Download)</span>
+                        </label>
+                        <div class="fieldDescription checkboxFieldDescription">
+                            Immediately intercepts newly imported movies and episodes and sets clean title and metadata year.
+                        </div>
+                    </div>
+
+                    <div class="checkboxContainer checkboxContainer-withDescription">
+                        <label>
+                            <input is="emby-checkbox" type="checkbox" id="chkRunOnItemUpdated" />
+                            <span>Trigger when media metadata is refreshed or updated</span>
+                        </label>
+                        <div class="fieldDescription checkboxFieldDescription">
+                            Re-cleans titles whenever an item's metadata is refreshed.
+                        </div>
+                    </div>
+
+                    <div class="selectContainer" style="margin-top: 1.5em; margin-bottom: 2em;">
+                        <label class="selectLabel" for="selectUpdateMode">Title Update & Safety Mode:</label>
+                        <select is="emby-select" id="selectUpdateMode" class="emby-select">
+                            <option value="0">Clean If Dirty (Recommended - cleans new items AND any existing titles containing websites/junk)</option>
+                            <option value="1">Safe Mode (Only update if title is still the raw filename)</option>
+                            <option value="2">Force Clean (Always clean title from filename or current title)</option>
+                        </select>
+                        <div class="fieldDescription">
+                            "Clean If Dirty" ensures existing messy titles get cleaned during Scheduled Tasks, while leaving properly identified movies untouched.
+                        </div>
+                    </div>
+
+                    <!-- 4. CUSTOM TEXT & CONTENT TO REMOVE -->
+                    <div class="sectionTitleContainer flex align-items-center">
+                        <h3 class="sectionTitle">4. Custom Text & Content To Remove</h3>
+                    </div>
+                    <p style="color: #bbb; font-size: 0.9em;">
+                        Specify words, phrases, or site names that change over time and should be automatically removed:
+                    </p>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="txtCustomKeywords">Custom Keywords & Phrases to Remove (one per line):</label>
+                        <textarea is="emby-textarea" id="txtCustomKeywords" class="emby-textarea" rows="4" style="width: 100%; font-family: monospace;"></textarea>
+                        <div class="fieldDescription">
+                            Example: <code>5MovieRulz</code>, <code>1TamilMV</code>, <code>TamilBlasters</code>, <code>CineVood</code>, <code>Bolly4u</code>. Any match will be stripped from titles automatically. Case-insensitive.
+                        </div>
+                    </div>
+
+                    <div class="inputContainer" style="margin-top: 1.5em; margin-bottom: 2em;">
+                        <label class="inputLabel" for="txtCustomRegex">Custom Regular Expression Patterns (Advanced, one per line):</label>
+                        <textarea is="emby-textarea" id="txtCustomRegex" class="emby-textarea" rows="2" style="width: 100%; font-family: monospace;"></textarea>
+                        <div class="fieldDescription">
+                            Optional. Enter custom regex patterns to replace with a space.
+                        </div>
+                    </div>
+
+                    <!-- 5. BUILT-IN CLEANING RULES -->
+                    <div class="sectionTitleContainer flex align-items-center">
+                        <h3 class="sectionTitle">5. Built-in Cleaning Rules</h3>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1em; margin-bottom: 2em;">
+                        <div class="checkboxContainer">
+                            <label>
+                                <input is="emby-checkbox" type="checkbox" id="chkRemoveWebsites" checked />
+                                <span>Remove Website Domains & URLs</span>
+                            </label>
+                            <div class="fieldDescription checkboxFieldDescription">Strips www.*, .company, .cz, .to, .lat, .vip, etc.</div>
+                        </div>
+
+                        <div class="checkboxContainer">
+                            <label>
+                                <input is="emby-checkbox" type="checkbox" id="chkRemoveQualityTags" checked />
+                                <span>Remove Quality & Resolutions</span>
+                            </label>
+                            <div class="fieldDescription checkboxFieldDescription">Strips 2160p, 1080p, 720p, 4K, UHD, BluRay, WEB-DL, etc.</div>
+                        </div>
+
+                        <div class="checkboxContainer">
+                            <label>
+                                <input is="emby-checkbox" type="checkbox" id="chkRemoveCodecs" checked />
+                                <span>Remove Codecs & Audio Formats</span>
+                            </label>
+                            <div class="fieldDescription checkboxFieldDescription">Strips x264, x265, HEVC, AVC, AAC, DTS, Atmos, HDR, etc.</div>
+                        </div>
+
+                        <div class="checkboxContainer">
+                            <label>
+                                <input is="emby-checkbox" type="checkbox" id="chkRemoveLanguageTags" checked />
+                                <span>Remove Audio & Language Tags</span>
+                            </label>
+                            <div class="fieldDescription checkboxFieldDescription">Strips [Hindi + Telugu], Dual Audio, Multi, ESub, 2.1GB, etc.</div>
+                        </div>
+
+                        <div class="checkboxContainer">
+                            <label>
+                                <input is="emby-checkbox" type="checkbox" id="chkRemoveReleaseGroups" checked />
+                                <span>Remove Release Group Tags</span>
+                            </label>
+                            <div class="fieldDescription checkboxFieldDescription">Strips -SPARKS, -YTS, -RARBG, -PSA, -TGx, etc.</div>
+                        </div>
+
+                        <div class="checkboxContainer">
+                            <label>
+                                <input is="emby-checkbox" type="checkbox" id="chkRemoveMiscJunk" checked />
+                                <span>Remove Release Junk Words</span>
+                            </label>
+                            <div class="fieldDescription checkboxFieldDescription">Strips PROPER, REPACK, EXTENDED, UNRATED, etc.</div>
+                        </div>
+
+                        <div class="checkboxContainer">
+                            <label>
+                                <input is="emby-checkbox" type="checkbox" id="chkReplaceDotsWithSpaces" checked />
+                                <span>Replace Dots (.) with Spaces</span>
+                            </label>
+                            <div class="fieldDescription checkboxFieldDescription">The.Dark.Knight.2008 → The Dark Knight</div>
+                        </div>
+
+                        <div class="checkboxContainer">
+                            <label>
+                                <input is="emby-checkbox" type="checkbox" id="chkReplaceUnderscoresWithSpaces" checked />
+                                <span>Replace Underscores (_) with Spaces</span>
+                            </label>
+                            <div class="fieldDescription checkboxFieldDescription">Breaking_Bad → Breaking Bad</div>
+                        </div>
+
+                        <div class="checkboxContainer">
+                            <label>
+                                <input is="emby-checkbox" type="checkbox" id="chkCleanPunctuationAndDashes" checked />
+                                <span>Clean Separators & Dashes</span>
+                            </label>
+                            <div class="fieldDescription checkboxFieldDescription">Strips leading/trailing " - ", "_", empty brackets, etc.</div>
+                        </div>
+                    </div>
+
+                    <!-- 6. FORMATTING & YEAR HANDLING -->
+                    <div class="sectionTitleContainer flex align-items-center">
+                        <h3 class="sectionTitle">6. Formatting & Year Handling</h3>
+                    </div>
+
+                    <div style="display: flex; flex-wrap: wrap; gap: 2em; margin-bottom: 2.5em;">
+                        <div class="selectContainer" style="flex: 1; min-width: 250px;">
+                            <label class="selectLabel" for="selectYearHandling">Year Handling & Placement:</label>
+                            <select is="emby-select" id="selectYearHandling" class="emby-select">
+                                <option value="0">Store Year in Metadata only (Remove from Title - Recommended)</option>
+                                <option value="1">Parenthesize Year in Title (e.g., Movie (2026))</option>
+                                <option value="2">Keep Year in Title as Original</option>
+                            </select>
+                            <div class="fieldDescription">
+                                Default option keeps clean titles (e.g. "Lalithchary") while populating the Release Year field in Jellyfin metadata.
+                            </div>
+                        </div>
+
+                        <div class="selectContainer" style="flex: 1; min-width: 250px;">
+                            <label class="selectLabel" for="selectCasingHandling">Letter Casing:</label>
+                            <select is="emby-select" id="selectCasingHandling" class="emby-select">
+                                <option value="0">Preserve Original Casing</option>
+                                <option value="1">Title Case (e.g., The Dark Knight)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- SUBMIT BUTTON -->
+                    <div style="display: flex; gap: 1em; align-items: center; margin-top: 2em; margin-bottom: 3em;">
+                        <button is="emby-button" type="submit" class="raised button-submit block">
+                            <span>Save Settings</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            (function () {
+                var pluginId = '3f2a1b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c';
+                var availableLibraries = [];
+
+                function loadLibraries(config) {
+                    if (!window.ApiClient) return;
+                    ApiClient.getVirtualFolders().then(function (virtualFolders) {
+                        availableLibraries = virtualFolders || [];
+                        var container = document.querySelector('#libraryCheckboxes');
+                        if (!container) return;
+                        container.innerHTML = '';
+
+                        if (availableLibraries.length === 0) {
+                            container.innerHTML = '<div style="color: #888;">No libraries found.</div>';
+                            return;
+                        }
+
+                        var selectedIds = config.SelectedLibraryIds || [];
+                        availableLibraries.forEach(function (folder) {
+                            var div = document.createElement('div');
+                            div.className = 'checkboxContainer';
+
+                            var label = document.createElement('label');
+                            var checkbox = document.createElement('input');
+                            checkbox.setAttribute('is', 'emby-checkbox');
+                            checkbox.type = 'checkbox';
+                            checkbox.className = 'chkLibraryItem';
+                            checkbox.value = folder.ItemId;
+
+                            var isChecked = selectedIds.indexOf(folder.ItemId) !== -1 ||
+                                            selectedIds.indexOf(folder.Name) !== -1;
+                            checkbox.checked = isChecked;
+
+                            var span = document.createElement('span');
+                            var typeStr = folder.CollectionType ? ' (' + folder.CollectionType + ')' : '';
+                            span.textContent = folder.Name + typeStr;
+
+                            label.appendChild(checkbox);
+                            label.appendChild(span);
+                            div.appendChild(label);
+                            container.appendChild(div);
+                        });
+
+                        updateLibraryVisibility();
+                    }).catch(function (err) {
+                        var container = document.querySelector('#libraryCheckboxes');
+                        if (container) {
+                            container.innerHTML = '<div style="color: #e57373;">Failed to load libraries: ' + err + '</div>';
+                        }
+                    });
+                }
+
+                function updateLibraryVisibility() {
+                    var chkAll = document.querySelector('#chkProcessAllLibraries');
+                    var libContainer = document.querySelector('#libraryListContainer');
+                    if (!chkAll || !libContainer) return;
+                    if (chkAll.checked) {
+                        libContainer.style.opacity = '0.4';
+                        libContainer.style.pointerEvents = 'none';
+                    } else {
+                        libContainer.style.opacity = '1';
+                        libContainer.style.pointerEvents = 'auto';
+                    }
+                }
+
+                // Client-side Live Cleaner preview logic matching FilenameCleanerService
+                function cleanSampleWithMetadata(text) {
+                    if (!text) return { title: '', year: null };
+                    var str = text.trim();
+
+                    // Strip video extension
+                    str = str.replace(/\.(mkv|mp4|avi|mov|wmv|flv|m4v|ts|m2ts|webm|mpg|mpeg|vob|iso|3gp)$/i, '');
+
+                    var yrMode = document.querySelector('#selectYearHandling') ? document.querySelector('#selectYearHandling').value : '0';
+                    var extractedYear = null;
+
+                    // 1. PRIMARY RULE: After first hyphen to end of parenthesis containing year
+                    // e.g. "www.5MovieRulz.company - Lalithchary (2026) 1080p Telugu HQ..." -> "Lalithchary", Year: 2026
+                    var hyphenYearMatch = str.match(/^.*?[-–—]\s*(.+?)\s*[\(\[]((?:19|20)\d{2})[\)\]]/);
+                    if (hyphenYearMatch) {
+                        var t = hyphenYearMatch[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                        extractedYear = hyphenYearMatch[2];
+                        if (yrMode === '1') {
+                            return { title: t + ' (' + extractedYear + ')', year: extractedYear };
+                        }
+                        return { title: t, year: extractedYear };
+                    }
+
+                    // 2. Bracket prefix to year: e.g. "[1TamilMV.cz] I'm Game (2024)..."
+                    var bracketYearMatch = str.match(/^\[[^\]]+\]\s*[-–—]?\s*(.+?)\s*[\(\[]((?:19|20)\d{2})[\)\]]/);
+                    if (bracketYearMatch) {
+                        var t2 = bracketYearMatch[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                        extractedYear = bracketYearMatch[2];
+                        if (yrMode === '1') {
+                            return { title: t2 + ' (' + extractedYear + ')', year: extractedYear };
+                        }
+                        return { title: t2, year: extractedYear };
+                    }
+
+                    // 3. Standalone title to year
+                    var standaloneYearMatch = str.match(/^([^(\[]+?)\s*[\(\[]((?:19|20)\d{2})[\)\]]/);
+                    if (standaloneYearMatch && !str.match(/S\d+E\d+/i)) {
+                        var t3 = standaloneYearMatch[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                        extractedYear = standaloneYearMatch[2];
+                        if (yrMode === '1') {
+                            return { title: t3 + ' (' + extractedYear + ')', year: extractedYear };
+                        }
+                        return { title: t3, year: extractedYear };
+                    }
+
+                    // 4. Dot separated title to year (e.g. The.Dark.Knight.2008.1080p)
+                    var dotYearMatch = str.match(/^([a-zA-Z0-9\s\._\-'’]+?)[\.\s_-]+((?:19|20)\d{2})(?:[\.\s_-]|$)/);
+                    if (dotYearMatch && !str.match(/S\d+E\d+/i) && !str.includes('-')) {
+                        var t4 = dotYearMatch[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                        extractedYear = dotYearMatch[2];
+                        if (yrMode === '1') {
+                            return { title: t4 + ' (' + extractedYear + ')', year: extractedYear };
+                        }
+                        return { title: t4, year: extractedYear };
+                    }
+
+                    // 5. Fallback cleaning
+                    var kwVal = document.querySelector('#txtCustomKeywords') ? document.querySelector('#txtCustomKeywords').value : '';
+                    if (kwVal) {
+                        var kws = kwVal.split(/[\r\n,]+/);
+                        kws.forEach(function (kw) {
+                            kw = kw.trim();
+                            if (kw) {
+                                var escaped = kw.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+                                str = str.replace(new RegExp('\\[\\s*' + escaped + '\\s*\\][\\s\\-_:~|]*', 'gi'), ' ');
+                                str = str.replace(new RegExp('^' + escaped + '[\\s\\-_:~|]+', 'gi'), ' ');
+                                str = str.replace(new RegExp('\\b' + escaped + '\\b', 'gi'), ' ');
+                            }
+                        });
+                    }
+
+                    if (document.querySelector('#chkRemoveWebsites') && document.querySelector('#chkRemoveWebsites').checked) {
+                        str = str.replace(/^(?:[\[\(]?[^\s\-–—]+(?:www|\.company|\.cz|\.lat|\.to|\.vip|\.org|\.net|\.com|MovieRulz|Tamil|CineVood)[^\s\-–—]*[\]\)]?)\s*[-–—]\s*/gi, '');
+                        str = str.replace(/^(?:[\[\(]?(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9_\-\.]+\.[a-zA-Z]{2,}[\]\)]?[\s\-_:~|]*)+/gi, ' ');
+                        str = str.replace(/\[\s*(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9_\-\.]+\.[a-zA-Z]{2,}[^\]]*\][\s\-_:~|]*/gi, ' ');
+                        str = str.replace(/\b(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9_\-\.]+\.(?:company|cz|lat|to|vip|org|net|com|io|me|top|xyz)\b/gi, ' ');
+                        str = str.replace(/^(?:5MovieRulz|MovieRulz|1TamilMV|TamilMV|TamilBlasters|CineVood|Bolly4u)[\s\-_:~|]+/gi, ' ');
+                    }
+
+                    if (document.querySelector('#chkRemoveLanguageTags') && document.querySelector('#chkRemoveLanguageTags').checked) {
+                        str = str.replace(/(?:[-–—]\s*)?[\[\(]?\s*\d+(?:\.\d+)?\s*(?:GB|MB)\s*[\]\)]?/gi, ' ');
+                        str = str.replace(/[\[\(][^\]\)]*(?:5\.1|7\.1|2\.0|6CH|8CH|Kbps|DD\+|DDP|Dolby|AAC|AC3|Atmos)[^\]\)]*[\]\)]/gi, ' ');
+                        str = str.replace(/\[[\s\w\+\-\/\&]*(?:Hindi|Tamil|Telugu|Malayalam|Kannada|Eng|English|Hin|Tam|Tel)[\s\w\+\-\/\&]*\][\s\-_:~|]*/gi, ' ');
+                        str = str.replace(/\b(?:Multi[\s\-]Audio|Dual[\s\-]Audio)\b/gi, ' ');
+                        str = str.replace(/(?:\[\s*)?(?:ESub|ESubs|Soft[\s\-]ESub|MSubs|English Subtitles|Eng Sub|Subbed)(?:\s*\])?/gi, ' ');
+                    }
+
+                    if (document.querySelector('#chkReplaceDotsWithSpaces') && document.querySelector('#chkReplaceDotsWithSpaces').checked) {
+                        str = str.replace(/\./g, ' ');
+                    }
+                    if (document.querySelector('#chkReplaceUnderscoresWithSpaces') && document.querySelector('#chkReplaceUnderscoresWithSpaces').checked) {
+                        str = str.replace(/_/g, ' ');
+                    }
+
+                    if (document.querySelector('#chkRemoveQualityTags') && document.querySelector('#chkRemoveQualityTags').checked) {
+                        var qTags = ["2160p", "1080p", "1080i", "720p", "480p", "4K", "UHD", "BluRay", "BDRip", "BRRip", "WEB-DL", "WEBRip", "HDRip", "HDTV", "DVDRip", "PreDVDRip", "CAMRip", "HDCAM", "CAM", "HQ", "HD"];
+                        qTags.forEach(function (t) {
+                            str = str.replace(new RegExp('\\b' + t + '\\b', 'gi'), ' ');
+                        });
+                    }
+
+                    if (document.querySelector('#chkRemoveCodecs') && document.querySelector('#chkRemoveCodecs').checked) {
+                        var cTags = ["x264", "x265", "H264", "H265", "HEVC", "AVC", "AV1", "AAC", "AC3", "DTS", "TrueHD", "Atmos", "HDR", "HDR10", "DV", "DoVi"];
+                        cTags.forEach(function (t) {
+                            str = str.replace(new RegExp('\\b' + t + '\\b', 'gi'), ' ');
+                        });
+                    }
+
+                    if (document.querySelector('#chkRemoveReleaseGroups') && document.querySelector('#chkRemoveReleaseGroups').checked) {
+                        str = str.replace(/-(?:SPARKS|YTS(?:\.MX)?|YIFY|RARBG|PSA|TGx|ETRG|ION10|GalaxyRG|mkvCinemas)\b/gi, ' ');
+                    }
+
+                    // Check for year in fallback string
+                    var yMatch = str.match(/\b((?:19|20)\d{2})\b/);
+                    if (yMatch && !str.match(/S\d+E\d+/i)) {
+                        extractedYear = yMatch[1];
+                    }
+
+                    if (yrMode === "0") {
+                        // Remove year from title
+                        str = str.replace(/[\(\[]*\b(?:19|20)\d{2}\b[\)\]]*/g, ' ');
+                    } else if (yrMode === "1" && extractedYear) {
+                        str = str.replace(/[\(\[]*\b(?:19|20)\d{2}\b[\)\]]*/g, ' ');
+                        str = str + ' (' + extractedYear + ')';
+                    }
+
+                    str = str.replace(/[\[\(][\s\-_:~|&]*[\]\)]/g, ' ');
+                    str = str.replace(/\s{2,}/g, ' ').trim();
+                    str = str.replace(/^[ \t\-_:~|\.\,\/\\]+/, '').replace(/[ \t\-_:~|\.\,\/\\]+$/, '');
+
+                    return { title: str.replace(/\s{2,}/g, ' ').trim(), year: extractedYear };
+                }
+
+                function runLiveTest() {
+                    var inputEl = document.querySelector('#txtTestInput');
+                    if (!inputEl) return;
+                    var result = cleanSampleWithMetadata(inputEl.value);
+
+                    // Field 2: What is Required from Current Data (Extracted Metadata)
+                    var reqEl = document.querySelector('#txtTestRequiredData');
+                    if (reqEl) {
+                        if (result.year) {
+                            reqEl.value = 'Year: ' + result.year + ' (Metadata: ProductionYear)';
+                        } else {
+                            reqEl.value = '(No release year detected in current data)';
+                        }
+                    }
+
+                    // Field 3: Output Title (Readonly like existing)
+                    var resEl = document.querySelector('#lblTestResult');
+                    if (resEl) {
+                        resEl.textContent = result.title || '(Empty)';
+                    }
+                }
+
+                function onPageShow() {
+                    if (!window.ApiClient) return;
+                    Dashboard.showLoadingMsg();
+
+                    ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                        document.querySelector('#chkProcessAllLibraries').checked = config.ProcessAllLibraries !== false;
+                        document.querySelector('#chkEnableMovies').checked = config.EnableMovies !== false;
+                        document.querySelector('#chkEnableEpisodes').checked = config.EnableEpisodes !== false;
+                        document.querySelector('#chkRunOnItemAdded').checked = config.RunOnItemAdded !== false;
+                        document.querySelector('#chkRunOnItemUpdated').checked = config.RunOnItemUpdated === true;
+                        document.querySelector('#selectUpdateMode').value = (config.UpdateMode || 0).toString();
+
+                        document.querySelector('#txtCustomKeywords').value = config.CustomKeywordsToRemove || "5MovieRulz\nMovieRulz\nTamilMV\nTamilBlasters\nCineVood\nBolly4u\nTorrentCounter";
+                        document.querySelector('#txtCustomRegex').value = config.CustomRegexPatterns || '';
+
+                        document.querySelector('#chkRemoveWebsites').checked = config.RemoveWebsites !== false;
+                        document.querySelector('#chkRemoveQualityTags').checked = config.RemoveQualityTags !== false;
+                        document.querySelector('#chkRemoveCodecs').checked = config.RemoveCodecs !== false;
+                        document.querySelector('#chkRemoveLanguageTags').checked = config.RemoveLanguageTags !== false;
+                        document.querySelector('#chkRemoveReleaseGroups').checked = config.RemoveReleaseGroups !== false;
+                        document.querySelector('#chkRemoveMiscJunk').checked = config.RemoveMiscJunk !== false;
+                        document.querySelector('#chkReplaceDotsWithSpaces').checked = config.ReplaceDotsWithSpaces !== false;
+                        document.querySelector('#chkReplaceUnderscoresWithSpaces').checked = config.ReplaceUnderscoresWithSpaces !== false;
+                        document.querySelector('#chkCleanPunctuationAndDashes').checked = config.CleanPunctuationAndDashes !== false;
+
+                        // Default to 0: Store Year in Metadata only (Remove from Title)
+                        document.querySelector('#selectYearHandling').value = (config.YearHandling !== undefined ? config.YearHandling : 0).toString();
+                        document.querySelector('#selectCasingHandling').value = (config.CasingHandling || 0).toString();
+
+                        loadLibraries(config);
+                        runLiveTest();
+                        Dashboard.hideLoadingMsg();
+                    }).catch(function (err) {
+                        Dashboard.hideLoadingMsg();
+                    });
+                }
+
+                function onFormSubmit(e) {
+                    if (e) e.preventDefault();
+                    Dashboard.showLoadingMsg();
+
+                    ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                        config.ProcessAllLibraries = document.querySelector('#chkProcessAllLibraries').checked;
+
+                        var selectedLibs = [];
+                        document.querySelectorAll('.chkLibraryItem:checked').forEach(function (cb) {
+                            selectedLibs.push(cb.value);
+                        });
+                        config.SelectedLibraryIds = selectedLibs;
+
+                        config.EnableMovies = document.querySelector('#chkEnableMovies').checked;
+                        config.EnableEpisodes = document.querySelector('#chkEnableEpisodes').checked;
+                        config.RunOnItemAdded = document.querySelector('#chkRunOnItemAdded').checked;
+                        config.RunOnItemUpdated = document.querySelector('#chkRunOnItemUpdated').checked;
+                        config.UpdateMode = parseInt(document.querySelector('#selectUpdateMode').value, 10) || 0;
+
+                        config.CustomKeywordsToRemove = document.querySelector('#txtCustomKeywords').value || '';
+                        config.CustomRegexPatterns = document.querySelector('#txtCustomRegex').value || '';
+
+                        config.RemoveWebsites = document.querySelector('#chkRemoveWebsites').checked;
+                        config.RemoveQualityTags = document.querySelector('#chkRemoveQualityTags').checked;
+                        config.RemoveCodecs = document.querySelector('#chkRemoveCodecs').checked;
+                        config.RemoveLanguageTags = document.querySelector('#chkRemoveLanguageTags').checked;
+                        config.RemoveReleaseGroups = document.querySelector('#chkRemoveReleaseGroups').checked;
+                        config.RemoveMiscJunk = document.querySelector('#chkRemoveMiscJunk').checked;
+                        config.ReplaceDotsWithSpaces = document.querySelector('#chkReplaceDotsWithSpaces').checked;
+                        config.ReplaceUnderscoresWithSpaces = document.querySelector('#chkReplaceUnderscoresWithSpaces').checked;
+                        config.CleanPunctuationAndDashes = document.querySelector('#chkCleanPunctuationAndDashes').checked;
+
+                        config.YearHandling = parseInt(document.querySelector('#selectYearHandling').value, 10) || 0;
+                        config.CasingHandling = parseInt(document.querySelector('#selectCasingHandling').value, 10) || 0;
+
+                        ApiClient.updatePluginConfiguration(pluginId, config).then(function (result) {
+                            Dashboard.hideLoadingMsg();
+                            if (Dashboard.processPluginConfigurationUpdateResult) {
+                                Dashboard.processPluginConfigurationUpdateResult(result);
+                            } else {
+                                Dashboard.alert("Settings saved successfully.");
+                            }
+                        }).catch(function (err) {
+                            Dashboard.hideLoadingMsg();
+                            Dashboard.alert("Error saving settings: " + err);
+                        });
+                    }).catch(function (err) {
+                        Dashboard.hideLoadingMsg();
+                        Dashboard.alert("Error loading settings: " + err);
+                    });
+
+                    return false;
+                }
+
+                // Page setup hook (supports jQuery and vanilla JS)
+                var page = document.querySelector('#JellyTitlerenamerrConfigPage');
+                if (window.$) {
+                    $('.JellyTitlerenamerrConfigPage').off('pageshow.fn').on('pageshow.fn', onPageShow);
+                    $('.JellyTitlerenamerrConfigForm').off('submit.fn').on('submit.fn', onFormSubmit);
+                } else if (page) {
+                    page.addEventListener('pageshow', onPageShow);
+                    var form = document.querySelector('#JellyTitlerenamerrConfigForm');
+                    if (form) form.addEventListener('submit', onFormSubmit);
+                }
+
+                // Attach Live Test Event Listeners
+                document.querySelector('#txtTestInput').addEventListener('input', runLiveTest);
+                document.querySelector('#txtCustomKeywords').addEventListener('input', runLiveTest);
+                document.querySelectorAll('#JellyTitlerenamerrConfigForm input[type="checkbox"]').forEach(function (cb) {
+                    cb.addEventListener('change', runLiveTest);
+                });
+                document.querySelectorAll('#JellyTitlerenamerrConfigForm select').forEach(function (sel) {
+                    sel.addEventListener('change', runLiveTest);
+                });
+                document.querySelector('#chkProcessAllLibraries').addEventListener('change', updateLibraryVisibility);
+            })();
+        </script>
+    </div>
+</body>
+</html>

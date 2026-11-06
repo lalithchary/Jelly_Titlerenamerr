@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Jelly_Titlerenamerr.Tests/Jelly_Titlerenamerr.Tests.csproj" />
+  <Project Path="Jelly_Titlerenamerr/Jelly_Titlerenamerr.csproj" />
+</Solution>
