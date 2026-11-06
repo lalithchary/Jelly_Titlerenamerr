@@ -6,15 +6,15 @@
     "overview": "Cleans dirty website prefixes, scene tags, and extracts release year into Jellyfin metadata.",
     "owner": "lalithchary",
     "category": "Metadata",
-    "imageUrl": "https://lalithchary.github.io/Jelly_Titlerenamerr/logo.png",
+    "imageUrl": "https://lalithchary.github.io/Jelly_Titlerenamerr/logo.jpg",
     "versions": [
       {
         "version": "1.3.1.0",
-        "changelog": "Initial release of Jelly_Titlerenamerr by lalithchary: extracts Year to Jellyfin metadata and excludes from title, interactive 3-field preview GUI, complete website and domain stripper.",
+        "changelog": "Release v1.3.1.0 by lalithchary: landscape repository icon, editable required metadata field in GUI, metadata year extraction, clean title output.",
         "targetAbi": "10.9.0.0",
         "sourceUrl": "https://github.com/lalithchary/Jelly_Titlerenamerr/releases/download/v1.3.1.0/Jelly_Titlerenamerr_1.3.1.0.zip",
-        "checksum": "b404000b1b94fcdb6b178c87196ddd04",
-        "timestamp": "2026-11-06 17:40:00"
+        "checksum": "76aef3cc75a8179a8746131125947cd3",
+        "timestamp": "2026-11-06 18:25:00"
       }
     ]
   }

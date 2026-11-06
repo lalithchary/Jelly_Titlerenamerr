@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="Logo/jtitle.png" alt="Jelly_Titlerenamerr Logo" width="160" style="border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);" />
+<img src="Logo/logo.jpg" alt="Jelly_Titlerenamerr Logo" width="480" style="border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);" />
 
 # Jelly_Titlerenamerr
 
@@ -76,9 +76,9 @@ Crucially, **Jelly_Titlerenamerr** extracts the release year from the filename a
     - **Title:** `Lalithchary`
     - **Metadata Year (`ProductionYear`):** `2026`
 - **🧪 Interactive 3-Field Live Preview GUI:**
-  - Field 1: **Current Metadata (Raw Filename / Title)**
-  - Field 2: **What is Required from Current Data (Extracted Metadata / Year)**
-  - Field 3: **Output Title (Cleaned Title for Jellyfin - Read-Only)**
+  - Field 1: **Current Metadata (Raw Filename / Current Title)** *(Input)*
+  - Field 2: **What is Required from Current Data (Extracted Metadata)** *(Editable: auto-populates from Field 1, or type corrections directly)*
+  - Field 3: **Output Title (Cleaned Title for Jellyfin)** *(Read-Only output with live metadata year indicator)*
 - **📂 Library Selection:**
   - Select specifically which libraries to clean (e.g. Telugu Movies, Movies), or clean all libraries.
 - **⚡ Triggers & Automation:**

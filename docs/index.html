@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jelly_Titlerenamerr - Jellyfin Plugin by lalithchary</title>
-    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
     <meta name="description" content="Jellyfin plugin by lalithchary to automatically clean movie and episode titles, strip website domains, and extract release years into Jellyfin metadata.">
     <meta property="og:title" content="Jelly_Titlerenamerr - Jellyfin Plugin">
     <meta property="og:description" content="Cleans titles, strips piracy website domains, and extracts release years into Jellyfin metadata.">
-    <meta property="og:image" content="https://lalithchary.github.io/Jelly_Titlerenamerr/logo.png">
+    <meta property="og:image" content="https://lalithchary.github.io/Jelly_Titlerenamerr/logo.jpg">
     <meta property="og:url" content="https://lalithchary.github.io/Jelly_Titlerenamerr/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,7 +58,7 @@
         .nav-container {
             max-width: 1100px;
             margin: 0 auto;
-            padding: 0.9em 1.5em;
+            padding: 0.85em 1.5em;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -67,17 +67,16 @@
         .brand {
             display: flex;
             align-items: center;
-            gap: 0.85em;
+            gap: 0.9em;
             text-decoration: none;
             color: var(--text-primary);
         }
 
-        .brand-logo {
-            width: 42px;
-            height: 42px;
-            border-radius: 8px;
-            object-fit: cover;
-            box-shadow: 0 2px 10px rgba(0, 164, 220, 0.3);
+        .brand-logo-landscape {
+            height: 38px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 164, 220, 0.35);
         }
 
         .brand-name {
@@ -134,14 +133,27 @@
             flex: 1;
             max-width: 1100px;
             margin: 0 auto;
-            padding: 3em 1.5em;
+            padding: 2.5em 1.5em;
             width: 100%;
         }
 
         /* Hero Section */
         .hero {
             text-align: center;
-            padding: 2.5em 0 3.5em;
+            padding: 1.5em 0 3em;
+        }
+
+        .hero-banner-container {
+            margin: 0 auto 1.8em;
+            max-width: 680px;
+        }
+
+        .hero-banner-img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 164, 220, 0.4);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
         }
 
         .hero-badge {
@@ -159,10 +171,10 @@
         }
 
         .hero-title {
-            font-size: 2.9em;
+            font-size: 2.8em;
             font-weight: 800;
             letter-spacing: -1px;
-            line-height: 1.18;
+            line-height: 1.2;
             margin-bottom: 0.5em;
             background: linear-gradient(135deg, #ffffff 40%, #00a4dc 100%);
             -webkit-background-clip: text;
@@ -343,10 +355,38 @@
         }
 
         .field-label {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             font-size: 0.92em;
             font-weight: 600;
             margin-bottom: 0.45em;
+        }
+
+        .field-badge {
+            font-size: 0.76em;
+            padding: 0.15em 0.55em;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .field-badge-input {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ddd;
+        }
+
+        .field-badge-editable {
+            background: rgba(0, 229, 255, 0.18);
+            border: 1px solid rgba(0, 229, 255, 0.35);
+            color: var(--accent-cyan);
+        }
+
+        .field-badge-readonly {
+            background: rgba(76, 175, 80, 0.15);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            color: #81c784;
         }
 
         .field-input {
@@ -367,12 +407,22 @@
             box-shadow: 0 0 0 3px rgba(0, 164, 220, 0.2);
         }
 
-        .field-input.readonly-extracted {
-            background: rgba(0, 164, 220, 0.1);
-            border-color: rgba(0, 164, 220, 0.35);
+        .field-input.editable-field {
+            background: rgba(0, 164, 220, 0.12);
+            border-color: rgba(0, 164, 220, 0.5);
             color: var(--accent-cyan);
             font-weight: 600;
-            cursor: default;
+        }
+
+        .field-input.editable-field:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.25);
+        }
+
+        .field-hint {
+            font-size: 0.82em;
+            color: var(--text-secondary);
+            margin-top: 0.4em;
         }
 
         .output-box {
@@ -383,12 +433,21 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8em;
         }
 
         .output-title-val {
-            font-size: 1.4em;
+            font-size: 1.45em;
             font-weight: 700;
             color: var(--accent-green);
+        }
+
+        .metadata-year-badge {
+            font-size: 0.84em;
+            color: var(--accent-cyan);
+            margin-top: 0.3em;
+            font-weight: 500;
         }
 
         /* FEATURES GRID */
@@ -456,7 +515,7 @@
     <header>
         <div class="nav-container">
             <a href="#" class="brand">
-                <img src="logo.png" alt="Jelly_Titlerenamerr Logo" class="brand-logo" onerror="this.src='logo.jpg'">
+                <img src="logo.jpg" alt="Jelly_Titlerenamerr Logo" class="brand-logo-landscape">
                 <div>
                     <div class="brand-name">Jelly_Titlerenamerr</div>
                     <div class="brand-author">by lalithchary</div>
@@ -481,6 +540,10 @@
 
         <!-- Hero -->
         <section class="hero">
+            <div class="hero-banner-container">
+                <img src="logo.jpg" alt="Jelly_Titlerenamerr Landscape Banner" class="hero-banner-img">
+            </div>
+
             <div class="hero-badge">Jellyfin Plugin • v1.3.1.0</div>
             <h1 class="hero-title">Clean Titles. Extract Metadata.<br>Automate Jellyfin.</h1>
             <p class="hero-subtitle">
@@ -530,7 +593,7 @@
                 <li class="install-step-item">
                     <div class="install-step-title">Install from Catalog</div>
                     <div class="install-step-desc">
-                        Go to the <strong>Catalog</strong> tab, find <strong>Jelly_Titlerenamerr</strong>, click <strong>Install</strong>, and restart your Jellyfin server.
+                        Go to the <strong>Catalog</strong> tab, find <strong>Jelly_Titlerenamerr</strong> (with its landscape icon), click <strong>Install</strong>, and restart your Jellyfin server.
                     </div>
                 </li>
             </ol>
@@ -546,41 +609,53 @@
                 <span style="font-size: 0.82em; font-weight: 700; color: var(--accent-green); text-transform: uppercase;">Live Sandbox Preview</span>
                 <h2 class="section-title" style="margin-top: 0.2em;">🧪 Interactive Cleaner Tester</h2>
                 <p class="section-desc">
-                    Experience how Jelly_Titlerenamerr parses filenames, extracts release year into metadata, and creates clean titles:
+                    Type a raw filename into <strong>Field 1</strong>. The extracted metadata will appear in <strong>Field 2</strong> (which is editable so you can make corrections), and the final clean title displays in <strong>Field 3</strong>:
                 </p>
             </div>
 
             <!-- Field 1: Current Metadata -->
             <div class="field-group">
                 <label class="field-label" for="liveInput" style="color: #e0e0e0;">
-                    1. Current Metadata (Raw Filename / Current Title):
+                    <span>1. Current Metadata (Raw Filename / Current Title):</span>
+                    <span class="field-badge field-badge-input">Input</span>
                 </label>
                 <input type="text" id="liveInput" class="field-input" 
                        value="www.5MovieRulz.company - Lalithchary (2026) 1080p Telugu HQ HDRip - HEVC - (DD+5.1 - 192kbps & AAC) - 2.1GB - ESub.mkv" 
                        placeholder="Paste any dirty filename here..." />
+                <div class="field-hint">Incoming dirty filename or metadata from your media file.</div>
             </div>
 
-            <!-- Field 2: What is Required from Current Data -->
+            <!-- Field 2: What is Required from Current Data (EDITABLE) -->
             <div class="field-group">
                 <label class="field-label" for="liveRequired" style="color: var(--accent-cyan);">
-                    2. What is Required from Current Data (Extracted Metadata):
+                    <span>2. What is Required from Current Data (Extracted Metadata):</span>
+                    <span class="field-badge field-badge-editable">Editable Field</span>
                 </label>
-                <input type="text" id="liveRequired" class="field-input readonly-extracted" readonly 
-                       value="Year: 2026 (Metadata: ProductionYear)" />
+                <input type="text" id="liveRequired" class="field-input editable-field" 
+                       value="Lalithchary (2026)" 
+                       placeholder="Type or edit what metadata is required from current data..." />
+                <div class="field-hint">
+                    ✍️ <strong>Editable:</strong> You can type or correct metadata here directly. Field 3 updates in real-time as you type!
+                </div>
             </div>
 
             <!-- Field 3: Output Title -->
             <div class="field-group">
                 <label class="field-label" style="color: var(--accent-green);">
-                    3. Output Title (Cleaned Title for Jellyfin):
+                    <span>3. Output Title (Cleaned Title for Jellyfin):</span>
+                    <span class="field-badge field-badge-readonly">Read-Only Output</span>
                 </label>
                 <div class="output-box">
                     <div>
-                        <div style="font-size: 0.72em; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2em;">CLEAN TITLE APPLIED TO JELLYFIN:</div>
+                        <div style="font-size: 0.72em; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2em;">FINAL CLEAN TITLE IN JELLYFIN:</div>
                         <div id="liveOutput" class="output-title-val">Lalithchary</div>
+                        <div id="liveYearMetadata" class="metadata-year-badge">
+                            📅 Release Year in Metadata: 2026
+                        </div>
                     </div>
-                    <span style="font-size: 0.8em; color: #81c784; background: rgba(76, 175, 80, 0.15); border: 1px solid rgba(76, 175, 80, 0.3); border-radius: 4px; padding: 0.3em 0.8em; font-weight: 600;">Read-Only</span>
+                    <span style="font-size: 0.8em; color: #81c784; background: rgba(76, 175, 80, 0.15); border: 1px solid rgba(76, 175, 80, 0.3); border-radius: 4px; padding: 0.35em 0.8em; font-weight: 600;">Read-Only</span>
                 </div>
+                <div class="field-hint">The resulting title set in Jellyfin (year is excluded from title and saved to metadata).</div>
             </div>
         </section>
 
@@ -671,84 +746,131 @@
             });
         }
 
-        function cleanSample(text) {
-            if (!text) return { title: '', year: null };
+        // Extract core required data from Field 1 raw input
+        function extractRequiredFromRaw(text) {
+            if (!text) return '';
             var str = text.trim();
 
             str = str.replace(/\.(mkv|mp4|avi|mov|wmv|flv|m4v|ts|m2ts|webm|mpg|mpeg|vob|iso|3gp)$/i, '');
 
-            var extractedYear = null;
-
             // 1. Hyphen to year
             var m1 = str.match(/^.*?[-–—]\s*(.+?)\s*[\(\[]((?:19|20)\d{2})[\)\]]/);
             if (m1) {
-                var t = m1[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
-                return { title: t, year: m1[2] };
+                var t1 = m1[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                return t1 + ' (' + m1[2] + ')';
             }
 
             // 2. Bracket prefix
             var m2 = str.match(/^\[[^\]]+\]\s*[-–—]?\s*(.+?)\s*[\(\[]((?:19|20)\d{2})[\)\]]/);
             if (m2) {
                 var t2 = m2[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
-                return { title: t2, year: m2[2] };
+                return t2 + ' (' + m2[2] + ')';
             }
 
-            // 3. Standalone title with year
+            // 3. Domain prefix with year
+            var mDomain = str.match(/^(?:(?:https?:\/\/|www\.)?[a-zA-Z0-9_\-\.]+\.(?:company|cz|lat|to|vip|top|org|net|com))\s*[-–—]?\s*(.+?)\s*[\(\[]((?:19|20)\d{2})[\)\]]/i);
+            if (mDomain) {
+                var tDom = mDomain[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                return tDom + ' (' + mDomain[2] + ')';
+            }
+
+            // 4. Standalone title with year
             var m3 = str.match(/^([^(\[]+?)\s*[\(\[]((?:19|20)\d{2})[\)\]]/);
             if (m3 && !str.match(/S\d+E\d+/i)) {
                 var t3 = m3[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
-                return { title: t3, year: m3[2] };
+                return t3 + ' (' + m3[2] + ')';
             }
 
-            // 4. Dot year
+            // 5. Dot year
             var m4 = str.match(/^([a-zA-Z0-9\s\._\-'’]+?)[\.\s_-]+((?:19|20)\d{2})(?:[\.\s_-]|$)/);
             if (m4 && !str.match(/S\d+E\d+/i) && !str.includes('-')) {
                 var t4 = m4[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
-                return { title: t4, year: m4[2] };
+                return t4 + ' (' + m4[2] + ')';
             }
 
-            // Fallback
-            str = str.replace(/^(?:[\[\(]?[^\s\-–—]+(?:www|\.company|\.cz|\.lat|\.to|\.vip|\.org|\.net|\.com|MovieRulz|Tamil|CineVood)[^\s\-–—]*[\]\)]?)\s*[-–—]\s*/gi, '');
-            str = str.replace(/^(?:[\[\(]?(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9_\-\.]+\.[a-zA-Z]{2,}[\]\)]?[\s\-_:~|]*)+/gi, ' ');
-            str = str.replace(/(?:[-–—]\s*)?[\[\(]?\s*\d+(?:\.\d+)?\s*(?:GB|MB)\s*[\]\)]?/gi, ' ');
-            str = str.replace(/[\[\(][^\]\)]*(?:5\.1|7\.1|2\.0|6CH|8CH|Kbps|DD\+|DDP|Dolby|AAC|AC3|Atmos)[^\]\)]*[\]\)]/gi, ' ');
-            str = str.replace(/\./g, ' ').replace(/_/g, ' ');
+            // 6. Fallback
+            var cleanStr = str;
+            cleanStr = cleanStr.replace(/^(?:[\[\(]?[^\s\-–—]+(?:www|\.company|\.cz|\.lat|\.to|\.vip|\.org|\.net|\.com|MovieRulz|Tamil|CineVood)[^\s\-–—]*[\]\)]?)\s*[-–—]\s*/gi, '');
+            cleanStr = cleanStr.replace(/^(?:[\[\(]?(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9_\-\.]+\.[a-zA-Z]{2,}[\]\)]?[\s\-_:~|]*)+/gi, ' ');
+            cleanStr = cleanStr.replace(/(?:[-–—]\s*)?[\[\(]?\s*\d+(?:\.\d+)?\s*(?:GB|MB)\s*[\]\)]?/gi, ' ');
+            cleanStr = cleanStr.replace(/[\[\(][^\]\)]*(?:5\.1|7\.1|2\.0|6CH|8CH|Kbps|DD\+|DDP|Dolby|AAC|AC3|Atmos)[^\]\)]*[\]\)]/gi, ' ');
+            cleanStr = cleanStr.replace(/\./g, ' ').replace(/_/g, ' ');
 
             var qTags = ["2160p", "1080p", "720p", "480p", "4K", "UHD", "BluRay", "BDRip", "BRRip", "WEB-DL", "WEBRip", "HDRip", "HDTV", "x264", "x265", "HEVC", "AVC", "AAC", "DTS", "TrueHD", "Atmos", "HDR"];
             qTags.forEach(function (tag) {
-                str = str.replace(new RegExp('\\b' + tag + '\\b', 'gi'), ' ');
+                cleanStr = cleanStr.replace(new RegExp('\\b' + tag + '\\b', 'gi'), ' ');
             });
 
-            var yMatch = str.match(/\b((?:19|20)\d{2})\b/);
-            if (yMatch && !str.match(/S\d+E\d+/i)) {
-                extractedYear = yMatch[1];
-                str = str.replace(/\b(?:19|20)\d{2}\b/g, ' ');
+            var yMatch = cleanStr.match(/\b((?:19|20)\d{2})\b/);
+            if (yMatch && !cleanStr.match(/S\d+E\d+/i)) {
+                cleanStr = cleanStr.replace(/\b(?:19|20)\d{2}\b/g, ' ');
+                cleanStr = cleanStr.replace(/[\[\(][\s\-_:~|&]*[\]\)]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                cleanStr = cleanStr.replace(/^[ \t\-_:~|\.\,\/\\]+/, '').replace(/[ \t\-_:~|\.\,\/\\]+$/, '');
+                return cleanStr + ' (' + yMatch[1] + ')';
             }
 
+            cleanStr = cleanStr.replace(/[\[\(][\s\-_:~|&]*[\]\)]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+            cleanStr = cleanStr.replace(/^[ \t\-_:~|\.\,\/\\]+/, '').replace(/[ \t\-_:~|\.\,\/\\]+$/, '');
+            return cleanStr;
+        }
+
+        // Process Field 2 (Required Data) -> Field 3 (Output Title & Year Metadata)
+        function processRequiredToOutput(requiredText) {
+            if (!requiredText) return { title: '', year: null };
+            var str = requiredText.trim();
+
+            var extractedYear = null;
+            var ym = str.match(/[\(\[]\s*((?:19|20)\d{2})\s*[\)\]]/);
+            if (ym) {
+                extractedYear = ym[1];
+            } else {
+                var ym2 = str.match(/\b((?:19|20)\d{2})\b/);
+                if (ym2) {
+                    extractedYear = ym2[1];
+                }
+            }
+
+            // Remove year from title (stored in metadata)
+            str = str.replace(/[\(\[]\s*(?:19|20)\d{2}\s*[\)\]]/g, ' ');
+            str = str.replace(/\b(?:19|20)\d{2}\b/g, ' ');
+
+            // Clean punctuation and spaces
+            str = str.replace(/[\._]/g, ' ');
             str = str.replace(/[\[\(][\s\-_:~|&]*[\]\)]/g, ' ');
             str = str.replace(/\s{2,}/g, ' ').trim();
-            str = str.replace(/^[ \t\-_:~|\.\,\/\\]+/, '').replace(/[ \t\-_:~|\.\,\/\\]+$/, '');
+            str = str.replace(/^[ \t\-_:~|\.\,\/\\]+/, '').replace(/[ \t\-_:~|\.\,\/\\]+$/, '').trim();
 
             return { title: str, year: extractedYear };
         }
 
-        function updateTester() {
-            var input = document.getElementById('liveInput').value;
-            var result = cleanSample(input);
+        function onField1Changed() {
+            var rawInput = document.getElementById('liveInput').value;
+            var extracted = extractRequiredFromRaw(rawInput);
+            document.getElementById('liveRequired').value = extracted;
+            onField2Changed();
+        }
 
-            var reqEl = document.getElementById('liveRequired');
-            if (result.year) {
-                reqEl.value = 'Year: ' + result.year + ' (Metadata: ProductionYear)';
-            } else {
-                reqEl.value = '(No release year detected in current data)';
-            }
+        function onField2Changed() {
+            var reqText = document.getElementById('liveRequired').value;
+            var result = processRequiredToOutput(reqText);
 
             var outEl = document.getElementById('liveOutput');
             outEl.textContent = result.title || '(Empty)';
+
+            var yrEl = document.getElementById('liveYearMetadata');
+            if (result.year) {
+                yrEl.textContent = '📅 Release Year in Metadata: ' + result.year;
+                yrEl.style.color = 'var(--accent-cyan)';
+            } else {
+                yrEl.textContent = 'ℹ️ (No release year detected - title only)';
+                yrEl.style.color = '#aaa';
+            }
         }
 
-        document.getElementById('liveInput').addEventListener('input', updateTester);
-        updateTester();
+        document.getElementById('liveInput').addEventListener('input', onField1Changed);
+        document.getElementById('liveRequired').addEventListener('input', onField2Changed);
+
+        onField1Changed();
     </script>
 </body>
 </html>

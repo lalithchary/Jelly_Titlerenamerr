@@ -8,28 +8,29 @@
         <div data-role="content">
             <div class="content-primary">
                 <form id="JellyTitlerenamerrConfigForm" class="JellyTitlerenamerrConfigForm">
-                    <div class="sectionTitleContainer flex align-items-center" style="gap: 1em; margin-bottom: 0.5em;">
-                        <img src="https://lalithchary.github.io/Jelly_Titlerenamerr/logo.png" alt="Logo" style="height: 48px; width: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.4);" onerror="this.style.display='none'" />
+                    <!-- HEADER WITH LANDSCAPE LOGO -->
+                    <div class="sectionTitleContainer flex align-items-center" style="gap: 1.2em; margin-bottom: 0.8em; flex-wrap: wrap;">
+                        <img src="https://lalithchary.github.io/Jelly_Titlerenamerr/logo.jpg" alt="Logo" style="height: 52px; width: auto; border-radius: 6px; box-shadow: 0 2px 10px rgba(0,0,0,0.5);" onerror="this.style.display='none'" />
                         <div>
                             <h2 class="sectionTitle" style="margin: 0; font-size: 1.8em; color: #00a4dc;">Jelly_Titlerenamerr Settings</h2>
-                            <div style="font-size: 0.85em; color: #888;">Developed by <strong style="color: #4caf50;">lalithchary</strong></div>
+                            <div style="font-size: 0.88em; color: #aaa;">Plugin by <strong style="color: #4caf50;">lalithchary</strong> • Metadata & Title Cleaner</div>
                         </div>
                     </div>
                     <p style="color: #aaa; margin-bottom: 2em; line-height: 1.5;">
                         Automatically cleans movie and episode titles by stripping piracy website domains (e.g., <code>5MovieRulz</code>, <code>TamilMV</code>, <code>TamilBlasters</code>, <code>CineVood</code>), scene tags, and audio clutter. Extracts clean titles and stores release years directly into Jellyfin metadata.
                     </p>
 
-                    <!-- LIVE TESTER SANDBOX: 3 FIELDS, NO EXAMPLE BUTTONS -->
+                    <!-- LIVE TESTER SANDBOX: 3 FIELDS WITH EDITABLE 2ND FIELD -->
                     <div class="paperList" style="background: rgba(0, 164, 220, 0.08); border: 1px solid rgba(0, 164, 220, 0.35); border-radius: 10px; padding: 1.5em; margin-bottom: 2.5em;">
                         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8em;">
                             <h3 style="margin: 0; color: #00a4dc; font-size: 1.25em;">🧪 Live Cleaner Tester & Metadata Preview</h3>
                             <span style="font-size: 0.8em; color: #81c784; background: rgba(76, 175, 80, 0.15); border: 1px solid rgba(76, 175, 80, 0.3); border-radius: 4px; padding: 0.2em 0.6em;">Interactive Sandbox</span>
                         </div>
                         <p style="color: #bbb; font-size: 0.9em; margin-bottom: 1.2em;">
-                            Type or paste any filename to preview how current metadata is parsed, what data is extracted, and the final output title:
+                            Type or paste any filename into <strong>Field 1</strong>. The extracted metadata will appear in <strong>Field 2</strong> (which is editable so you can type corrections or custom metadata), and the final clean title will display in <strong>Field 3</strong>:
                         </p>
 
-                        <!-- FIELD 1: Current Metadata -->
+                        <!-- FIELD 1: Current Metadata (Input) -->
                         <div class="inputContainer" style="margin-bottom: 1.2em;">
                             <label class="inputLabel" for="txtTestInput" style="font-weight: 600; color: #e0e0e0; font-size: 0.95em;">
                                 1. Current Metadata (Raw Filename / Current Title):
@@ -39,14 +40,19 @@
                             <div class="fieldDescription">The incoming filename or dirty metadata from your media file.</div>
                         </div>
 
-                        <!-- FIELD 2: What is Required from Current Data -->
+                        <!-- FIELD 2: What is Required from Current Data (EDITABLE) -->
                         <div class="inputContainer" style="margin-bottom: 1.2em;">
-                            <label class="inputLabel" for="txtTestRequiredData" style="font-weight: 600; color: #00a4dc; font-size: 0.95em;">
-                                2. What is Required from Current Data (Extracted Metadata):
+                            <label class="inputLabel" for="txtTestRequiredData" style="font-weight: 600; color: #00a4dc; font-size: 0.95em; display: flex; align-items: center; justify-content: space-between;">
+                                <span>2. What is Required from Current Data (Extracted Metadata):</span>
+                                <span style="font-size: 0.78em; color: #00e5ff; background: rgba(0, 229, 255, 0.15); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 3px; padding: 0.15em 0.5em; font-weight: normal;">Editable Field</span>
                             </label>
-                            <input is="emby-input" type="text" id="txtTestRequiredData" class="emby-input" readonly
-                                   style="background: rgba(0, 164, 220, 0.12); border-color: rgba(0, 164, 220, 0.4); color: #00e5ff; font-weight: bold; cursor: default;" />
-                            <div class="fieldDescription">Metadata extracted from current data (e.g. Release Year) to be stored in Jellyfin metadata.</div>
+                            <input is="emby-input" type="text" id="txtTestRequiredData" class="emby-input" 
+                                   value="Lalithchary (2026)"
+                                   placeholder="Type or edit what metadata is required from current data..."
+                                   style="background: rgba(0, 164, 220, 0.12); border: 1px solid rgba(0, 164, 220, 0.5); color: #00e5ff; font-weight: 600;" />
+                            <div class="fieldDescription">
+                                ✍️ <strong>Editable:</strong> Auto-populates from Field 1, or type here to specify/correct the required metadata. Field 3 updates in real-time.
+                            </div>
                         </div>
 
                         <!-- FIELD 3: Output Title (Readonly like existing) -->
@@ -54,12 +60,15 @@
                             <label class="inputLabel" for="txtTestOutputTitle" style="font-weight: 600; color: #4caf50; font-size: 0.95em;">
                                 3. Output Title (Cleaned Title for Jellyfin):
                             </label>
-                            <div style="background: rgba(0, 0, 0, 0.5); padding: 1em 1.2em; border-radius: 6px; border: 1px solid rgba(76, 175, 80, 0.4); display: flex; align-items: center; justify-content: space-between;">
+                            <div style="background: rgba(0, 0, 0, 0.5); padding: 1.1em 1.3em; border-radius: 6px; border: 1px solid rgba(76, 175, 80, 0.4); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.8em;">
                                 <div>
                                     <div style="font-size: 0.72em; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2em;">CLEANED TITLE RESULT:</div>
-                                    <div id="lblTestResult" style="font-size: 1.35em; font-weight: bold; color: #4caf50;">Lalithchary</div>
+                                    <div id="lblTestResult" style="font-size: 1.4em; font-weight: bold; color: #4caf50;">Lalithchary</div>
+                                    <div id="lblTestYearMetadata" style="font-size: 0.82em; color: #00e5ff; margin-top: 0.3em; font-weight: 500;">
+                                        📅 Release Year in Metadata: 2026
+                                    </div>
                                 </div>
-                                <span style="font-size: 0.8em; color: #81c784; background: rgba(76, 175, 80, 0.15); padding: 0.3em 0.7em; border-radius: 4px; border: 1px solid rgba(76, 175, 80, 0.3);">Read-Only</span>
+                                <span style="font-size: 0.8em; color: #81c784; background: rgba(76, 175, 80, 0.15); padding: 0.35em 0.75em; border-radius: 4px; border: 1px solid rgba(76, 175, 80, 0.3); font-weight: 600;">Read-Only Output</span>
                             </div>
                             <div class="fieldDescription">The final clean title applied to Jellyfin (year is excluded from title and saved to metadata).</div>
                         </div>
@@ -349,158 +358,167 @@
                     }
                 }
 
-                // Client-side Live Cleaner preview logic matching FilenameCleanerService
-                function cleanSampleWithMetadata(text) {
-                    if (!text) return { title: '', year: null };
+                // Extract core metadata from Field 1 raw filename
+                function extractRequiredFromRaw(text) {
+                    if (!text) return '';
                     var str = text.trim();
 
                     // Strip video extension
                     str = str.replace(/\.(mkv|mp4|avi|mov|wmv|flv|m4v|ts|m2ts|webm|mpg|mpeg|vob|iso|3gp)$/i, '');
 
+                    // 1. Hyphen to year (e.g. "www.5MovieRulz.company - Lalithchary (2026) 1080p...")
+                    var m1 = str.match(/^.*?[-–—]\s*(.+?)\s*[\(\[]((?:19|20)\d{2})[\)\]]/);
+                    if (m1) {
+                        var t1 = m1[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                        return t1 + ' (' + m1[2] + ')';
+                    }
+
+                    // 2. Bracket prefix (e.g. "[1TamilMV.cz] I'm Game (2024)...")
+                    var m2 = str.match(/^\[[^\]]+\]\s*[-–—]?\s*(.+?)\s*[\(\[]((?:19|20)\d{2})[\)\]]/);
+                    if (m2) {
+                        var t2 = m2[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                        return t2 + ' (' + m2[2] + ')';
+                    }
+
+                    // 3. Domain prefix with year
+                    var mDomain = str.match(/^(?:(?:https?:\/\/|www\.)?[a-zA-Z0-9_\-\.]+\.(?:company|cz|lat|to|vip|top|org|net|com))\s*[-–—]?\s*(.+?)\s*[\(\[]((?:19|20)\d{2})[\)\]]/i);
+                    if (mDomain) {
+                        var tDom = mDomain[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                        return tDom + ' (' + mDomain[2] + ')';
+                    }
+
+                    // 4. Standalone title to year
+                    var m3 = str.match(/^([^(\[]+?)\s*[\(\[]((?:19|20)\d{2})[\)\]]/);
+                    if (m3 && !str.match(/S\d+E\d+/i)) {
+                        var t3 = m3[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                        return t3 + ' (' + m3[2] + ')';
+                    }
+
+                    // 5. Dot separated title to year (e.g. The.Dark.Knight.2008.1080p)
+                    var m4 = str.match(/^([a-zA-Z0-9\s\._\-'’]+?)[\.\s_-]+((?:19|20)\d{2})(?:[\.\s_-]|$)/);
+                    if (m4 && !str.match(/S\d+E\d+/i) && !str.includes('-')) {
+                        var t4 = m4[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                        return t4 + ' (' + m4[2] + ')';
+                    }
+
+                    // 6. Fallback cleaning of websites and junk
+                    var cleanStr = str;
+                    cleanStr = cleanStr.replace(/^(?:[\[\(]?[^\s\-–—]+(?:www|\.company|\.cz|\.lat|\.to|\.vip|\.org|\.net|\.com|MovieRulz|Tamil|CineVood)[^\s\-–—]*[\]\)]?)\s*[-–—]\s*/gi, '');
+                    cleanStr = cleanStr.replace(/^(?:[\[\(]?(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9_\-\.]+\.[a-zA-Z]{2,}[\]\)]?[\s\-_:~|]*)+/gi, ' ');
+                    cleanStr = cleanStr.replace(/(?:[-–—]\s*)?[\[\(]?\s*\d+(?:\.\d+)?\s*(?:GB|MB)\s*[\]\)]?/gi, ' ');
+                    cleanStr = cleanStr.replace(/[\[\(][^\]\)]*(?:5\.1|7\.1|2\.0|6CH|8CH|Kbps|DD\+|DDP|Dolby|AAC|AC3|Atmos)[^\]\)]*[\]\)]/gi, ' ');
+                    cleanStr = cleanStr.replace(/\./g, ' ').replace(/_/g, ' ');
+
+                    var qTags = ["2160p", "1080p", "1080i", "720p", "480p", "4K", "UHD", "BluRay", "BDRip", "BRRip", "WEB-DL", "WEBRip", "HDRip", "HDTV", "DVDRip", "PreDVDRip", "CAMRip", "HDCAM", "CAM", "HQ", "HD", "x264", "x265", "HEVC", "AVC", "AV1", "AAC", "AC3", "DTS", "TrueHD", "Atmos", "HDR"];
+                    qTags.forEach(function (t) {
+                        cleanStr = cleanStr.replace(new RegExp('\\b' + t + '\\b', 'gi'), ' ');
+                    });
+
+                    var yMatch = cleanStr.match(/\b((?:19|20)\d{2})\b/);
+                    if (yMatch && !cleanStr.match(/S\d+E\d+/i)) {
+                        cleanStr = cleanStr.replace(/\b(?:19|20)\d{2}\b/g, ' ');
+                        cleanStr = cleanStr.replace(/[\[\(][\s\-_:~|&]*[\]\)]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                        cleanStr = cleanStr.replace(/^[ \t\-_:~|\.\,\/\\]+/, '').replace(/[ \t\-_:~|\.\,\/\\]+$/, '');
+                        return cleanStr + ' (' + yMatch[1] + ')';
+                    }
+
+                    cleanStr = cleanStr.replace(/[\[\(][\s\-_:~|&]*[\]\)]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                    cleanStr = cleanStr.replace(/^[ \t\-_:~|\.\,\/\\]+/, '').replace(/[ \t\-_:~|\.\,\/\\]+$/, '');
+                    return cleanStr;
+                }
+
+                // Process Field 2 (Required Data) -> Field 3 (Output Title & Year Metadata)
+                function processRequiredToOutput(requiredText) {
+                    if (!requiredText) return { title: '', year: null };
+                    var str = requiredText.trim();
+
                     var yrMode = document.querySelector('#selectYearHandling') ? document.querySelector('#selectYearHandling').value : '0';
                     var extractedYear = null;
 
-                    // 1. PRIMARY RULE: After first hyphen to end of parenthesis containing year
-                    // e.g. "www.5MovieRulz.company - Lalithchary (2026) 1080p Telugu HQ..." -> "Lalithchary", Year: 2026
-                    var hyphenYearMatch = str.match(/^.*?[-–—]\s*(.+?)\s*[\(\[]((?:19|20)\d{2})[\)\]]/);
-                    if (hyphenYearMatch) {
-                        var t = hyphenYearMatch[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
-                        extractedYear = hyphenYearMatch[2];
-                        if (yrMode === '1') {
-                            return { title: t + ' (' + extractedYear + ')', year: extractedYear };
+                    // Extract year if present in parentheses or standalone
+                    var ym = str.match(/[\(\[]\s*((?:19|20)\d{2})\s*[\)\]]/);
+                    if (ym) {
+                        extractedYear = ym[1];
+                    } else {
+                        var ym2 = str.match(/\b((?:19|20)\d{2})\b/);
+                        if (ym2) {
+                            extractedYear = ym2[1];
                         }
-                        return { title: t, year: extractedYear };
                     }
 
-                    // 2. Bracket prefix to year: e.g. "[1TamilMV.cz] I'm Game (2024)..."
-                    var bracketYearMatch = str.match(/^\[[^\]]+\]\s*[-–—]?\s*(.+?)\s*[\(\[]((?:19|20)\d{2})[\)\]]/);
-                    if (bracketYearMatch) {
-                        var t2 = bracketYearMatch[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
-                        extractedYear = bracketYearMatch[2];
-                        if (yrMode === '1') {
-                            return { title: t2 + ' (' + extractedYear + ')', year: extractedYear };
-                        }
-                        return { title: t2, year: extractedYear };
-                    }
-
-                    // 3. Standalone title to year
-                    var standaloneYearMatch = str.match(/^([^(\[]+?)\s*[\(\[]((?:19|20)\d{2})[\)\]]/);
-                    if (standaloneYearMatch && !str.match(/S\d+E\d+/i)) {
-                        var t3 = standaloneYearMatch[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
-                        extractedYear = standaloneYearMatch[2];
-                        if (yrMode === '1') {
-                            return { title: t3 + ' (' + extractedYear + ')', year: extractedYear };
-                        }
-                        return { title: t3, year: extractedYear };
-                    }
-
-                    // 4. Dot separated title to year (e.g. The.Dark.Knight.2008.1080p)
-                    var dotYearMatch = str.match(/^([a-zA-Z0-9\s\._\-'’]+?)[\.\s_-]+((?:19|20)\d{2})(?:[\.\s_-]|$)/);
-                    if (dotYearMatch && !str.match(/S\d+E\d+/i) && !str.includes('-')) {
-                        var t4 = dotYearMatch[1].replace(/[\._]/g, ' ').replace(/\s{2,}/g, ' ').trim();
-                        extractedYear = dotYearMatch[2];
-                        if (yrMode === '1') {
-                            return { title: t4 + ' (' + extractedYear + ')', year: extractedYear };
-                        }
-                        return { title: t4, year: extractedYear };
-                    }
-
-                    // 5. Fallback cleaning
-                    var kwVal = document.querySelector('#txtCustomKeywords') ? document.querySelector('#txtCustomKeywords').value : '';
-                    if (kwVal) {
-                        var kws = kwVal.split(/[\r\n,]+/);
-                        kws.forEach(function (kw) {
-                            kw = kw.trim();
-                            if (kw) {
-                                var escaped = kw.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-                                str = str.replace(new RegExp('\\[\\s*' + escaped + '\\s*\\][\\s\\-_:~|]*', 'gi'), ' ');
-                                str = str.replace(new RegExp('^' + escaped + '[\\s\\-_:~|]+', 'gi'), ' ');
-                                str = str.replace(new RegExp('\\b' + escaped + '\\b', 'gi'), ' ');
-                            }
-                        });
-                    }
-
-                    if (document.querySelector('#chkRemoveWebsites') && document.querySelector('#chkRemoveWebsites').checked) {
-                        str = str.replace(/^(?:[\[\(]?[^\s\-–—]+(?:www|\.company|\.cz|\.lat|\.to|\.vip|\.org|\.net|\.com|MovieRulz|Tamil|CineVood)[^\s\-–—]*[\]\)]?)\s*[-–—]\s*/gi, '');
-                        str = str.replace(/^(?:[\[\(]?(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9_\-\.]+\.[a-zA-Z]{2,}[\]\)]?[\s\-_:~|]*)+/gi, ' ');
-                        str = str.replace(/\[\s*(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9_\-\.]+\.[a-zA-Z]{2,}[^\]]*\][\s\-_:~|]*/gi, ' ');
-                        str = str.replace(/\b(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9_\-\.]+\.(?:company|cz|lat|to|vip|org|net|com|io|me|top|xyz)\b/gi, ' ');
-                        str = str.replace(/^(?:5MovieRulz|MovieRulz|1TamilMV|TamilMV|TamilBlasters|CineVood|Bolly4u)[\s\-_:~|]+/gi, ' ');
-                    }
-
-                    if (document.querySelector('#chkRemoveLanguageTags') && document.querySelector('#chkRemoveLanguageTags').checked) {
-                        str = str.replace(/(?:[-–—]\s*)?[\[\(]?\s*\d+(?:\.\d+)?\s*(?:GB|MB)\s*[\]\)]?/gi, ' ');
-                        str = str.replace(/[\[\(][^\]\)]*(?:5\.1|7\.1|2\.0|6CH|8CH|Kbps|DD\+|DDP|Dolby|AAC|AC3|Atmos)[^\]\)]*[\]\)]/gi, ' ');
-                        str = str.replace(/\[[\s\w\+\-\/\&]*(?:Hindi|Tamil|Telugu|Malayalam|Kannada|Eng|English|Hin|Tam|Tel)[\s\w\+\-\/\&]*\][\s\-_:~|]*/gi, ' ');
-                        str = str.replace(/\b(?:Multi[\s\-]Audio|Dual[\s\-]Audio)\b/gi, ' ');
-                        str = str.replace(/(?:\[\s*)?(?:ESub|ESubs|Soft[\s\-]ESub|MSubs|English Subtitles|Eng Sub|Subbed)(?:\s*\])?/gi, ' ');
-                    }
-
-                    if (document.querySelector('#chkReplaceDotsWithSpaces') && document.querySelector('#chkReplaceDotsWithSpaces').checked) {
-                        str = str.replace(/\./g, ' ');
-                    }
-                    if (document.querySelector('#chkReplaceUnderscoresWithSpaces') && document.querySelector('#chkReplaceUnderscoresWithSpaces').checked) {
-                        str = str.replace(/_/g, ' ');
-                    }
-
-                    if (document.querySelector('#chkRemoveQualityTags') && document.querySelector('#chkRemoveQualityTags').checked) {
-                        var qTags = ["2160p", "1080p", "1080i", "720p", "480p", "4K", "UHD", "BluRay", "BDRip", "BRRip", "WEB-DL", "WEBRip", "HDRip", "HDTV", "DVDRip", "PreDVDRip", "CAMRip", "HDCAM", "CAM", "HQ", "HD"];
-                        qTags.forEach(function (t) {
-                            str = str.replace(new RegExp('\\b' + t + '\\b', 'gi'), ' ');
-                        });
-                    }
-
-                    if (document.querySelector('#chkRemoveCodecs') && document.querySelector('#chkRemoveCodecs').checked) {
-                        var cTags = ["x264", "x265", "H264", "H265", "HEVC", "AVC", "AV1", "AAC", "AC3", "DTS", "TrueHD", "Atmos", "HDR", "HDR10", "DV", "DoVi"];
-                        cTags.forEach(function (t) {
-                            str = str.replace(new RegExp('\\b' + t + '\\b', 'gi'), ' ');
-                        });
-                    }
-
-                    if (document.querySelector('#chkRemoveReleaseGroups') && document.querySelector('#chkRemoveReleaseGroups').checked) {
-                        str = str.replace(/-(?:SPARKS|YTS(?:\.MX)?|YIFY|RARBG|PSA|TGx|ETRG|ION10|GalaxyRG|mkvCinemas)\b/gi, ' ');
-                    }
-
-                    // Check for year in fallback string
-                    var yMatch = str.match(/\b((?:19|20)\d{2})\b/);
-                    if (yMatch && !str.match(/S\d+E\d+/i)) {
-                        extractedYear = yMatch[1];
-                    }
-
-                    if (yrMode === "0") {
-                        // Remove year from title
-                        str = str.replace(/[\(\[]*\b(?:19|20)\d{2}\b[\)\]]*/g, ' ');
-                    } else if (yrMode === "1" && extractedYear) {
-                        str = str.replace(/[\(\[]*\b(?:19|20)\d{2}\b[\)\]]*/g, ' ');
+                    // Format title according to Year Mode
+                    if (yrMode === '0') {
+                        // Store in metadata only, remove from title (Default)
+                        str = str.replace(/[\(\[]\s*(?:19|20)\d{2}\s*[\)\]]/g, ' ');
+                        str = str.replace(/\b(?:19|20)\d{2}\b/g, ' ');
+                    } else if (yrMode === '1' && extractedYear) {
+                        str = str.replace(/[\(\[]\s*(?:19|20)\d{2}\s*[\)\]]/g, ' ');
+                        str = str.replace(/\b(?:19|20)\d{2}\b/g, ' ');
                         str = str + ' (' + extractedYear + ')';
                     }
 
+                    // Clean punctuation and spacing
+                    str = str.replace(/[\._]/g, ' ');
                     str = str.replace(/[\[\(][\s\-_:~|&]*[\]\)]/g, ' ');
                     str = str.replace(/\s{2,}/g, ' ').trim();
-                    str = str.replace(/^[ \t\-_:~|\.\,\/\\]+/, '').replace(/[ \t\-_:~|\.\,\/\\]+$/, '');
+                    str = str.replace(/^[ \t\-_:~|\.\,\/\\]+/, '').replace(/[ \t\-_:~|\.\,\/\\]+$/, '').trim();
 
-                    return { title: str.replace(/\s{2,}/g, ' ').trim(), year: extractedYear };
-                }
-
-                function runLiveTest() {
-                    var inputEl = document.querySelector('#txtTestInput');
-                    if (!inputEl) return;
-                    var result = cleanSampleWithMetadata(inputEl.value);
-
-                    // Field 2: What is Required from Current Data (Extracted Metadata)
-                    var reqEl = document.querySelector('#txtTestRequiredData');
-                    if (reqEl) {
-                        if (result.year) {
-                            reqEl.value = 'Year: ' + result.year + ' (Metadata: ProductionYear)';
-                        } else {
-                            reqEl.value = '(No release year detected in current data)';
-                        }
+                    // Casing handling
+                    var casingMode = document.querySelector('#selectCasingHandling') ? document.querySelector('#selectCasingHandling').value : '0';
+                    if (casingMode === '1') {
+                        str = toTitleCase(str);
                     }
 
-                    // Field 3: Output Title (Readonly like existing)
+                    return { title: str, year: extractedYear };
+                }
+
+                function toTitleCase(str) {
+                    if (!str) return '';
+                    var minorWords = /^(a|an|the|and|but|or|for|nor|on|at|to|from|by|in|of|with)$/i;
+                    var words = str.split(/\s+/);
+                    for (var i = 0; i < words.length; i++) {
+                        var w = words[i].toLowerCase();
+                        if (i === 0 || i === words.length - 1 || !minorWords.test(w)) {
+                            words[i] = w.charAt(0).toUpperCase() + w.slice(1);
+                        } else {
+                            words[i] = w;
+                        }
+                    }
+                    return words.join(' ');
+                }
+
+                // When Field 1 is typed into: auto-extract to Field 2, then calculate Field 3
+                function onField1Changed() {
+                    var inputEl = document.querySelector('#txtTestInput');
+                    var reqEl = document.querySelector('#txtTestRequiredData');
+                    if (!inputEl || !reqEl) return;
+
+                    var extracted = extractRequiredFromRaw(inputEl.value);
+                    reqEl.value = extracted;
+                    onField2Changed();
+                }
+
+                // When Field 2 is typed into or updated: calculate Field 3 (Output Title)
+                function onField2Changed() {
+                    var reqEl = document.querySelector('#txtTestRequiredData');
+                    if (!reqEl) return;
+
+                    var result = processRequiredToOutput(reqEl.value);
+
                     var resEl = document.querySelector('#lblTestResult');
                     if (resEl) {
                         resEl.textContent = result.title || '(Empty)';
+                    }
+
+                    var yrEl = document.querySelector('#lblTestYearMetadata');
+                    if (yrEl) {
+                        if (result.year) {
+                            yrEl.textContent = '📅 Release Year in Metadata: ' + result.year;
+                            yrEl.style.color = '#00e5ff';
+                        } else {
+                            yrEl.textContent = 'ℹ️ (No release year detected - title only)';
+                            yrEl.style.color = '#aaa';
+                        }
                     }
                 }
 
@@ -534,7 +552,7 @@
                         document.querySelector('#selectCasingHandling').value = (config.CasingHandling || 0).toString();
 
                         loadLibraries(config);
-                        runLiveTest();
+                        onField1Changed();
                         Dashboard.hideLoadingMsg();
                     }).catch(function (err) {
                         Dashboard.hideLoadingMsg();
@@ -607,13 +625,14 @@
                 }
 
                 // Attach Live Test Event Listeners
-                document.querySelector('#txtTestInput').addEventListener('input', runLiveTest);
-                document.querySelector('#txtCustomKeywords').addEventListener('input', runLiveTest);
+                document.querySelector('#txtTestInput').addEventListener('input', onField1Changed);
+                document.querySelector('#txtTestRequiredData').addEventListener('input', onField2Changed);
+                document.querySelector('#txtCustomKeywords').addEventListener('input', onField1Changed);
                 document.querySelectorAll('#JellyTitlerenamerrConfigForm input[type="checkbox"]').forEach(function (cb) {
-                    cb.addEventListener('change', runLiveTest);
+                    cb.addEventListener('change', onField1Changed);
                 });
                 document.querySelectorAll('#JellyTitlerenamerrConfigForm select').forEach(function (sel) {
-                    sel.addEventListener('change', runLiveTest);
+                    sel.addEventListener('change', onField2Changed);
                 });
                 document.querySelector('#chkProcessAllLibraries').addEventListener('change', updateLibraryVisibility);
             })();
