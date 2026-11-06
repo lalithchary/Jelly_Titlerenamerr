@@ -7,7 +7,7 @@
 **The Smart Jellyfin Title & Metadata Cleaner**
 
 [![GitHub Pages](https://img.shields.io/badge/Website-GitHub%20Pages-00a4dc?style=flat&logo=github)](https://lalithchary.github.io/Jelly_Titlerenamerr/)
-[![Jellyfin](https://img.shields.io/badge/Jellyfin-10.9%2B%20%7C%2010.10-00a4dc?style=flat&logo=jellyfin)](https://jellyfin.org/)
+[![Jellyfin](https://img.shields.io/badge/Jellyfin-12.0%2B%20%7C%2012.40-00a4dc?style=flat&logo=jellyfin)](https://jellyfin.org/)
 [![Author](https://img.shields.io/badge/Author-lalithchary-4caf50?style=flat)](https://github.com/lalithchary)
 [![Release](https://img.shields.io/badge/Release-v1.3.1.0-blue?style=flat)](https://github.com/lalithchary/Jelly_Titlerenamerr/releases)
 
